@@ -1,0 +1,6 @@
+Products:
+-shopData.ts is the resource of products
+-i add a function getProducts to fetech my product api and use him as Product
+state in files which i need
+-i have kept the const shopData as he defined to use it in other files i dont
+use in it my product
