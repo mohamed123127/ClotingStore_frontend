@@ -1,8 +1,11 @@
+'use client'
 import React from "react";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const { t } = useTranslation();
 
   return (
     <footer className="overflow-hidden">
@@ -11,30 +14,11 @@ const Footer = () => {
         <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between pt-17.5 xl:pt-22.5 pb-10 xl:pb-15">
           <div className="max-w-[330px] w-full">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Help & Support
+              {t('HelpAndSupport')}
             </h2>
 
             <ul className="flex flex-col gap-3">
-              <li className="flex gap-4.5">
-                <span className="flex-shrink-0">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M4.25 8.51464C4.25 4.45264 7.77146 1.25 12 1.25C16.2285 1.25 19.75 4.45264 19.75 8.51464C19.75 12.3258 17.3871 16.8 13.5748 18.4292C12.574 18.8569 11.426 18.8569 10.4252 18.4292C6.61289 16.8 4.25 12.3258 4.25 8.51464ZM12 2.75C8.49655 2.75 5.75 5.38076 5.75 8.51464C5.75 11.843 7.85543 15.6998 11.0147 17.0499C11.639 17.3167 12.361 17.3167 12.9853 17.0499C16.1446 15.6998 18.25 11.843 18.25 8.51464C18.25 5.38076 15.5034 2.75 12 2.75ZM12 7.75C11.3096 7.75 10.75 8.30964 10.75 9C10.75 9.69036 11.3096 10.25 12 10.25C12.6904 10.25 13.25 9.69036 13.25 9C13.25 8.30964 12.6904 7.75 12 7.75ZM9.25 9C9.25 7.48122 10.4812 6.25 12 6.25C13.5188 6.25 14.75 7.48122 14.75 9C14.75 10.5188 13.5188 11.75 12 11.75C10.4812 11.75 9.25 10.5188 9.25 9ZM3.59541 14.9966C3.87344 15.3036 3.84992 15.7779 3.54288 16.0559C2.97519 16.57 2.75 17.0621 2.75 17.5C2.75 18.2637 3.47401 19.2048 5.23671 19.998C6.929 20.7596 9.31952 21.25 12 21.25C14.6805 21.25 17.071 20.7596 18.7633 19.998C20.526 19.2048 21.25 18.2637 21.25 17.5C21.25 17.0621 21.0248 16.57 20.4571 16.0559C20.1501 15.7779 20.1266 15.3036 20.4046 14.9966C20.6826 14.6895 21.1569 14.666 21.4639 14.9441C22.227 15.635 22.75 16.5011 22.75 17.5C22.75 19.2216 21.2354 20.5305 19.3788 21.3659C17.4518 22.2331 14.8424 22.75 12 22.75C9.15764 22.75 6.54815 22.2331 4.62116 21.3659C2.76457 20.5305 1.25 19.2216 1.25 17.5C1.25 16.5011 1.77305 15.635 2.53605 14.9441C2.84309 14.666 3.31738 14.6895 3.59541 14.9966Z"
-                      fill="#3C50E0"
-                    />
-                  </svg>
-                </span>
-                685 Market Street,Las Vegas, LA 95820,United States.
-              </li>
-
+              
               <li>
                 <a href="#" className="flex items-center gap-4.5">
                   <svg
@@ -61,7 +45,7 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  (+099) 532-786-9843
+                  0772 38 74 56
                 </a>
               </li>
 
@@ -81,7 +65,7 @@ const Footer = () => {
                       fill="#3C50E0"
                     />
                   </svg>
-                  support@example.com
+                  jardindenfant1825@gmail.com
                 </a>
               </li>
             </ul>
@@ -89,7 +73,7 @@ const Footer = () => {
             {/* <!-- Social Links start --> */}
             <div className="flex items-center gap-4 mt-7.5">
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61579701570738"
                 aria-label="Facebook Social Link"
                 className="flex ease-out duration-200 hover:text-blue"
               >
@@ -113,7 +97,7 @@ const Footer = () => {
                 </svg>
               </a>
 
-              <a
+              {/* <a
                 href="#"
                 aria-label="Twitter Social Link"
                 className="flex ease-out duration-200 hover:text-blue"
@@ -131,10 +115,10 @@ const Footer = () => {
                     fill=""
                   />
                 </svg>
-              </a>
+              </a> */}
 
               <a
-                href="#"
+                href="https://www.instagram.com/jardin_denfants1/?hl=fr"
                 aria-label="Instagram Social Link"
                 className="flex ease-out duration-200 hover:text-blue"
               >
@@ -170,26 +154,11 @@ const Footer = () => {
 
               <a
                 href="#"
-                aria-label="Linkedin Social Link"
+                aria-label="Tiktok Social Link"
                 className="flex ease-out duration-200 hover:text-blue"
               >
-                <svg
-                  className="fill-current"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.6535 1.6665C17.1222 1.6665 17.5129 1.83577 17.8254 2.17432C18.1639 2.48682 18.3332 2.87744 18.3332 3.34619V16.6535C18.3332 17.1222 18.1639 17.5259 17.8254 17.8644C17.5129 18.1769 17.1222 18.3332 16.6535 18.3332H3.34619C2.87744 18.3332 2.4738 18.1769 2.13525 17.8644C1.82275 17.5259 1.6665 17.1222 1.6665 16.6535V3.34619C1.6665 2.87744 1.82275 2.48682 2.13525 2.17432C2.4738 1.83577 2.87744 1.6665 3.34619 1.6665H16.6535ZM15.4295 15.4295V11.0155C15.4295 10.2603 15.1561 9.62223 14.6092 9.1014C14.0884 8.55452 13.4504 8.28109 12.6952 8.28109C12.3306 8.28109 11.966 8.38525 11.6014 8.59359C11.2368 8.80192 10.9634 9.06234 10.7811 9.37484V8.43734H8.43734V15.4295H10.7811V11.2889C10.7811 10.9764 10.8853 10.716 11.0936 10.5077C11.328 10.2733 11.6014 10.1561 11.9139 10.1561C12.2524 10.1561 12.5259 10.2733 12.7342 10.5077C12.9686 10.716 13.0858 10.9764 13.0858 11.2889V15.4295H15.4295ZM5.74202 7.14827C6.13265 7.14827 6.45817 7.01807 6.71859 6.75765C7.00505 6.47119 7.14827 6.13265 7.14827 5.74202C7.14827 5.3514 7.00505 5.02588 6.71859 4.76546C6.45817 4.479 6.13265 4.33577 5.74202 4.33577C5.3514 4.33577 5.01286 4.479 4.7264 4.76546C4.46598 5.02588 4.33577 5.3514 4.33577 5.74202C4.33577 6.13265 4.46598 6.47119 4.7264 6.75765C5.01286 7.01807 5.3514 7.14827 5.74202 7.14827ZM6.87484 15.4295V8.43734H4.57015V15.4295H6.87484Z"
-                    fill=""
-                  />
-                  <path
-                    opacity="0.04"
-                    d="M15.4297 15.4297V11.0156C15.4297 10.2604 15.1562 9.6224 14.6094 9.10156C14.0885 8.55469 13.4505 8.28125 12.6953 8.28125C12.3307 8.28125 11.9661 8.38542 11.6016 8.59375C11.237 8.80208 10.9635 9.0625 10.7812 9.375V8.4375H8.4375V15.4297H10.7812V11.2891C10.7812 10.9766 10.8854 10.7161 11.0938 10.5078C11.3281 10.2734 11.6016 10.1562 11.9141 10.1562C12.2526 10.1562 12.526 10.2734 12.7344 10.5078C12.9688 10.7161 13.0859 10.9766 13.0859 11.2891V15.4297H15.4297ZM5.74219 7.14844C6.13281 7.14844 6.45833 7.01823 6.71875 6.75781C7.00521 6.47135 7.14844 6.13281 7.14844 5.74219C7.14844 5.35156 7.00521 5.02604 6.71875 4.76562C6.45833 4.47917 6.13281 4.33594 5.74219 4.33594C5.35156 4.33594 5.01302 4.47917 4.72656 4.76562C4.46615 5.02604 4.33594 5.35156 4.33594 5.74219C4.33594 6.13281 4.46615 6.47135 4.72656 6.75781C5.01302 7.01823 5.35156 7.14844 5.74219 7.14844ZM6.875 15.4297V8.4375H4.57031V15.4297H6.875Z"
-                    fill=""
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16">
+                  <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
                 </svg>
               </a>
             </div>
@@ -198,33 +167,33 @@ const Footer = () => {
 
           <div className="w-full sm:w-auto">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Account
+              {t('Navigation')}
             </h2>
 
             <ul className="flex flex-col gap-3.5">
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  My Account
+                  {t('MyAccount')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Login / Register
+                  {t('SignIn')} / {t('SignUp')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Cart
+                  {t('Cart')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Wishlist
+                  {t('Wishlist')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Shop
+                  {t('Shop')}
                 </a>
               </li>
             </ul>
@@ -232,39 +201,35 @@ const Footer = () => {
 
           <div className="w-full sm:w-auto">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
-              Quick Link
+              {t('Guides')}
             </h2>
 
             <ul className="flex flex-col gap-3">
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Privacy Policy
+                  {t('PurchaseAndDeliveryProcess')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Refund Policy
+                  {t('ExchangePolicy')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Terms of Use
+                  {t('FAQs')}
                 </a>
               </li>
               <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
-                  FAQ’s
-                </a>
-              </li>
-              <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  Contact
+                  {t('Contact')}
                 </a>
               </li>
             </ul>
           </div>
 
-          <div className="w-full sm:w-auto">
+          {/* Downland app */}
+          {/* <div className="w-full sm:w-auto">
             <h2 className="mb-7.5 text-custom-1 font-medium text-dark lg:text-right">
               Download App
             </h2>
@@ -328,7 +293,7 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         {/* <!-- footer menu end --> */}
       </div>
@@ -338,10 +303,12 @@ const Footer = () => {
         <div className="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex gap-5 flex-wrap items-center justify-between">
             <p className="text-dark font-medium">
-              &copy; {year}. All rights reserved by PimjoLabs.
+              &copy; {year}. All rights reserved by Jardin d&apos;enfant.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4">
+            {/* Payment methods */}
+            
+            {/* <div className="flex flex-wrap items-center gap-4">
               <p className="font-medium">We Accept:</p>
 
               <div className="flex flex-wrap items-center gap-6">
@@ -386,7 +353,7 @@ const Footer = () => {
                   />
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

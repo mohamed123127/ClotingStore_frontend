@@ -11,10 +11,8 @@ const initialState = {
     reviews: 0,
     price: 0,
     discountedPrice: 0,
-    img: "",
+    previewImage: "",
     id: 0,
-    images: [],
-    imgs: { thumbnails: [], previews: [] },
   } as Product,
 } as InitialState;
 

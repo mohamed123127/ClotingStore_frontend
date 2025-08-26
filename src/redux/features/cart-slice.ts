@@ -7,14 +7,12 @@ type InitialState = {
 
 type CartItem = {
   id: number;
-  title: string;
+  name: string;
+  color: string;
+  size: string;
   price: number;
-  discountedPrice: number;
   quantity: number;
-  imgs?: {
-    thumbnails: string[];
-    previews: string[];
-  };
+  image: string;
 };
 
 const initialState: InitialState = {
@@ -26,20 +24,21 @@ export const cart = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action: PayloadAction<CartItem>) => {
-      const { id, title, price, quantity, discountedPrice, imgs } =
+      const { id, name,color,size, price, quantity, image } =
         action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
+      const existingItem = state.items.find((item) => item.id === id && item.color === color && item.size === size);
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
         state.items.push({
           id,
-          title,
+          name,
+          color,
+          size,
           price,
           quantity,
-          discountedPrice,
-          imgs,
+          image,
         });
       }
     },
@@ -69,7 +68,7 @@ export const selectCartItems = (state: RootState) => state.cartReducer.items;
 
 export const selectTotalPrice = createSelector([selectCartItems], (items) => {
   return items.reduce((total, item) => {
-    return total + item.discountedPrice * item.quantity;
+    return total + item.price * item.quantity;
   }, 0);
 });
 

@@ -8,9 +8,8 @@ export async function getProducts(): Promise<Product[]> {
   const products = data.products;
 
   return products.map((p: any) : Product => ({
-    title: p.name,
+    name: p.name,
     description: p.description,
-    reviews: 0,
     price: p.price,
     discountedPrice: null,
     id: p.id, 
@@ -20,18 +19,16 @@ export async function getProducts(): Promise<Product[]> {
 
 const shopData: Product[] = [
   {
-    title: "Havit HV-G69 USB Gamepad",
+    name: "Havit HV-G69 USB Gamepad",
     description: "",
-    reviews: 15,
     price: 59.0,
     discountedPrice: 29.0,
     id: 1,
     previewImage: "/images/products/product-1-sm-1.png",
   },
   {
-    title: "iPhone 14 Plus , 6/128GB",
+    name: "iPhone 14 Plus , 6/128GB",
     description: "",
-    reviews: 5,
     price: 899.0,
     discountedPrice: 99.0,
     id: 2,

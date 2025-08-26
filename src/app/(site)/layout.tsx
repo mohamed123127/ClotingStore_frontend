@@ -1,7 +1,10 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import "../../config/i18n"; // ⭐ استدعاء i18n مرة واحدة
 import "../css/euclid-circular-a-font.css";
 import "../css/style.css";
+
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
@@ -15,6 +18,9 @@ import PreviewSliderModal from "@/components/Common/PreviewSlider";
 
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
+import { dir } from 'i18next';
+import i18n from '../../config/i18n';
+
 
 export default function RootLayout({
   children,
@@ -26,7 +32,7 @@ export default function RootLayout({
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
-
+ console.log(i18n.language);
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body>
@@ -39,8 +45,7 @@ export default function RootLayout({
                 <ModalProvider>
                   <PreviewSliderProvider>
                     <Header />
-                    {children}
-
+                    {children} {/* ✅ هنا الصفحات تُعرض */}
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />

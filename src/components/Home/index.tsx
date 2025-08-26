@@ -7,17 +7,19 @@ import BestSeller from "./BestSeller";
 import CounDown from "./Countdown";
 import Testimonials from "./Testimonials";
 import Newsletter from "../Common/Newsletter";
+import StartView from "./StartView";
 
 const Home = () => {
   return (
     <main>
+      {/* <StartView /> */}
       <Hero />
       <Categories />
-      <NewArrival />
-      <PromoBanner />
-      <BestSeller />
+      {/* <NewArrival /> */}
+      {/* <PromoBanner /> */}
+      {/* <BestSeller /> */}
       <CounDown />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Newsletter />
     </main>
   );

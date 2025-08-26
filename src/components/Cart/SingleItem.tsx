@@ -10,7 +10,7 @@ import Image from "next/image";
 
 const SingleItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
-
+  console.log(item);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveFromCart = () => {
@@ -33,27 +33,32 @@ const SingleItem = ({ item }) => {
 
   return (
     <div className="flex items-center border-t border-gray-3 py-5 px-7.5">
-      <div className="min-w-[400px]">
+      <div className="min-w-[300px]">
         <div className="flex items-center justify-between gap-5">
           <div className="w-full flex items-center gap-5.5">
             <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
-              <Image width={200} height={200} src={item.imgs?.thumbnails[0]} alt="product" />
+              <Image width={200} height={200} src={item.image} alt="product" />
             </div>
 
             <div>
               <h3 className="text-dark ease-out duration-200 hover:text-blue">
-                <a href="#"> {item.title} </a>
+                <a href="#"> {item.name} </a>
               </h3>
             </div>
           </div>
         </div>
       </div>
-
-      <div className="min-w-[180px]">
-        <p className="text-dark">${item.discountedPrice}</p>
+      <div className="min-w-[100px]">
+        <p className="text-dark">{item.color}</p>
+      </div>
+      <div className="min-w-[100px]">
+        <p className="text-dark">{item.size}</p>
+      </div>
+      <div className="min-w-[100px]">
+        <p className="text-dark">{item.price}DA</p>
       </div>
 
-      <div className="min-w-[275px]">
+      <div className="min-w-[200px] flex justify-center">
         <div className="w-max flex items-center rounded-md border border-gray-3">
           <button
             onClick={() => handleDecreaseQuantity()}
@@ -105,8 +110,8 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[200px]">
-        <p className="text-dark">${item.discountedPrice * quantity}</p>
+      <div className="min-w-[200px] text-center">
+        <p className="text-dark">{item.price * quantity}DA</p>
       </div>
 
       <div className="min-w-[50px] flex justify-end">

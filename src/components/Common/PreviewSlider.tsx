@@ -1,6 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef } from "react";
+import { use, useCallback, useRef, useState } from "react";
 import "swiper/css/navigation";
 import "swiper/css";
 import Image from "next/image";
@@ -9,21 +9,25 @@ import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
 
 const PreviewSliderModal = () => {
-  const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
+  const { closePreviewModal, isModalPreviewOpen , currentIndex,imagesList} = usePreviewSlider();
+  const [index,setIndex] = useState(currentIndex);
+  //const data = useAppSelector((state) => state.productDetailsReducer.value);
+  //const sliderRef = useRef(null);
 
-  const data = useAppSelector((state) => state.productDetailsReducer.value);
+  const handlePrev = () => {
+    if(index == 0){
+      setIndex(imagesList.length -1);
+    } 
+    else{
+      setIndex(index-1);
+    } 
 
-  const sliderRef = useRef(null);
+  }
 
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
+  const handleNext = () => {
+    if(index == (imagesList.length -1)) setIndex(0);
+    else setIndex((prev)=>prev+1);
+  }
 
   return (
     <div
@@ -95,18 +99,16 @@ const PreviewSliderModal = () => {
         </button>
       </div>
 
-      <Swiper ref={sliderRef} slidesPerView={1} spaceBetween={20}>
-        <SwiperSlide>
           <div className="flex justify-center items-center">
-            <Image
-              src={"/images/products/product-2-bg-1.png"}
+            { imagesList[index] &&
+              <Image
+              src={imagesList[index]}
               alt={"product image"}
               width={450}
               height={450}
             />
+            }
           </div>
-        </SwiperSlide>
-      </Swiper>
     </div>
   );
 };

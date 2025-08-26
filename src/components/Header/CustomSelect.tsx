@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'next-i18next';
 
 const CustomSelect = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [ t ] = useTranslation();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -38,10 +40,10 @@ const CustomSelect = ({ options }) => {
         }`}
         onClick={toggleDropdown}
       >
-        {selectedOption.label}
+        {t(selectedOption.label)}
       </div>
       <div className={`select-items ${isOpen ? "" : "select-hide"}`}>
-        {options.slice(1, -1).map((option, index) => (
+        {options.filter((option)=>option!=selectedOption).map((option, index) => (
           <div
             key={index}
             onClick={() => handleOptionClick(option)}
@@ -49,7 +51,7 @@ const CustomSelect = ({ options }) => {
               selectedOption === option ? "same-as-selected" : ""
             }`}
           >
-            {option.label}
+            {t(option.label)}
           </div>
         ))}
       </div>

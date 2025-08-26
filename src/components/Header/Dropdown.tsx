@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from 'next-i18next';
 
 const Dropdown = ({ menuItem, stickyMenu }) => {
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const pathUrl = usePathname();
-
+  const [ t ] = useTranslation();
+ 
   return (
     <li
       onClick={() => setDropdownToggler(!dropdownToggler)}
@@ -19,7 +21,7 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
           stickyMenu ? "xl:py-4" : "xl:py-6"
         } ${pathUrl.includes(menuItem.title) && "!text-blue"}`}
       >
-        {menuItem.title}
+        {t(menuItem.title)}
         <svg
           className="fill-current cursor-pointer"
           width="16"
@@ -53,7 +55,7 @@ const Dropdown = ({ menuItem, stickyMenu }) => {
                 pathUrl === item.path && "text-blue bg-gray-1"
               } `}
             >
-              {item.title}
+              {t(item.title)}
             </Link>
           </li>
         ))}

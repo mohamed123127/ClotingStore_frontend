@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useCallback, useRef, useEffect } from "react";
 import data from "./categoryData";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 
 // Import Swiper styles
 import "swiper/css/navigation";
@@ -28,6 +29,7 @@ const Categories = () => {
     }
   }, []);
 
+  const {t} = useTranslation();
   return (
     <section className="overflow-hidden pt-17.5">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
@@ -70,14 +72,16 @@ const Categories = () => {
                     </clipPath>
                   </defs>
                 </svg>
-                Categories
+                {t("categories")}
               </span>
               <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-                Browse by Category
+                {t("browseByCategory")}
               </h2>
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* categories navigation buttons */}
+            
+            <div className={`flex rtl:flex-row-reverse items-center gap-3 ${data.length > 2 ? '' : 'hidden'} md:${data.length > 4 ? '' : 'hidden'} xl:${data.length > 6 ? '' : 'hidden'}`}>
               <button onClick={handlePrev} className="swiper-button-prev">
                 <svg
                   className="fill-current"
@@ -119,6 +123,7 @@ const Categories = () => {
           <Swiper
             ref={sliderRef}
             slidesPerView={6}
+            centerInsufficientSlides={true}
             breakpoints={{
               // when window width is >= 640px
               0: {

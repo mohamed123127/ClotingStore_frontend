@@ -9,12 +9,15 @@ import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
+import Languages from "./Languages";
+import { useTranslation } from 'next-i18next';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
   const { openCartModal } = useCartModalContext();
+  const { t } = useTranslation();
 
   const product = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
@@ -37,14 +40,11 @@ const Header = () => {
   });
 
   const options = [
-    { label: "All Categories", value: "0" },
-    { label: "Desktop", value: "1" },
-    { label: "Laptop", value: "2" },
-    { label: "Monitor", value: "3" },
-    { label: "Phone", value: "4" },
-    { label: "Watch", value: "5" },
-    { label: "Mouse", value: "6" },
-    { label: "Tablet", value: "7" },
+    { label: "AllCategories", value: "0" },
+    { label: "Boys", value: "1" },
+    { label: "Girls", value: "2" },
+    { label: "TwoItems", value: "3" },
+    { label: "ThreeItems", value: "4" }
   ];
 
   return (
@@ -63,7 +63,7 @@ const Header = () => {
           {/* <!-- header top left --> */}
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
-              <h1 className="text-dark font-bold text-2xl">Chic Enfants</h1>
+              <h1 className="text-dark font-bold text-2xl">Jardin d&apos;enfant</h1>
             </Link>
 
             <div className="max-w-[475px] w-full">
@@ -80,7 +80,7 @@ const Header = () => {
                       type="search"
                       name="search"
                       id="search"
-                      placeholder="I am shopping for..."
+                      placeholder={t('ShoppingForPlaceHolder')}
                       autoComplete="off"
                       className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
                     />
@@ -140,10 +140,10 @@ const Header = () => {
 
               <div>
                 <span className="block text-2xs text-dark-4 uppercase">
-                  24/7 SUPPORT
+                  {t('24/7Support')}
                 </span>
                 <p className="font-medium text-custom-sm text-dark">
-                  (+965) 7492-3477
+                  0772387456
                 </p>
               </div>
             </div>
@@ -177,10 +177,10 @@ const Header = () => {
 
                   <div>
                     <span className="block text-2xs text-dark-4 uppercase">
-                      account
+                      {t('Account')}
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      Sign In
+                      {t('SignIn')}
                     </p>
                   </div>
                 </Link>
@@ -228,13 +228,15 @@ const Header = () => {
 
                   <div>
                     <span className="block text-2xs text-dark-4 uppercase">
-                      cart
+                      {t('Cart')}
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      ${totalPrice}
+                      {totalPrice}DA
                     </p>
                   </div>
                 </button>
+
+                <Languages />
               </div>
 
               {/* <!-- Hamburger Toggle BTN --> */}
@@ -315,7 +317,7 @@ const Header = () => {
                             stickyMenu ? "xl:py-4" : "xl:py-6"
                           }`}
                         >
-                          {menuItem.title}
+                          {t(menuItem.title)}
                         </Link>
                       </li>
                     )
@@ -351,7 +353,7 @@ const Header = () => {
                         fill=""
                       />
                     </svg>
-                    Recently Viewed
+                    {t('RecentlyViewed')}
                   </a>
                 </li>
 
@@ -373,7 +375,7 @@ const Header = () => {
                         fill=""
                       />
                     </svg>
-                    Wishlist
+                    {t("Wishlist")}
                   </Link>
                 </li>
               </ul>

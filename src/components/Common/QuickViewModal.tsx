@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { resetQuickView } from "@/redux/features/quickView-slice";
-import { updateproductDetails } from "@/redux/features/product-details";
+import { productDetails, updateproductDetails } from "@/redux/features/product-details";
 import settings from "../../../settings.json";
 import ExtractWithoutRepetition from "@/helpers/Extractor";
 import { getProducts } from "../Shop/shopData";
@@ -18,7 +18,7 @@ import PreLoader from "@/components/Common/PreLoader";
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
-  const { openPreviewModal } = usePreviewSlider();
+  const {openPreviewModal } = usePreviewSlider();
   const [loading, setLoading] = useState({
     colors: true,
     sizes: true,
@@ -26,35 +26,39 @@ const QuickViewModal = () => {
   });
   const [productWithDetailles,setProductWithDetailles] = useState(null);
   const [quantity, setQuantity] = useState(0);
-  //const [selectedColor,setSelectedColor] = useState(null);
-  //const [selectedSize,setSelectedSize] = useState(null);
   const [selectedVariant,setSelectedVariant] = useState<any>([]);
-
+  const [previewImageIndex,setPreviewImageIndex] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
-
+  const carteItems = useAppSelector((state)=>state.cartReducer.items);
   // get the product data
   const product = useAppSelector((state) => state.quickViewReducer.value);
   const [activePreview, setActivePreview] = useState(product?.previewImage);
   const isAllLoaded = !loading.colors && !loading.sizes && !loading.images;
-
+  let selectedVariantQuantityInCart = 0;
   // preview modal
-  const handlePreviewSlider = () => {
+  const zoomCurrentPreviewImage = () => {
     dispatch(updateproductDetails(product));
 
-    openPreviewModal();
+    openPreviewModal(previewImageIndex,productWithDetailles.images);
   };
 
   // add to cart
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
-        ...product,
+        ...productWithDetailles,
+        id:selectedVariant.id,
+        price:parseInt(productWithDetailles.price.replace(/[,]/g, ''),10),
+        color:selectedVariant.color,
+        size:selectedVariant.size,
+        image:productWithDetailles.previewImage,
         quantity,
       })
     );
 
     closeModal();
   };
+
   //to close model
   useEffect(() => {
     // closing modal while clicking outside
@@ -143,7 +147,6 @@ const QuickViewModal = () => {
           product?.previewImage,
           jsonResponse.images.map((item)=>{return item.image_url})
         ].flat();
-        console.log(images);
       }else{
         images = [product?.previewImage];
       }
@@ -173,12 +176,20 @@ const QuickViewModal = () => {
     const foundVariant = productWithDetailles.variants.find(v => v.color == selectedVariant.color && v.size == selectedVariant.size);
     if(foundVariant) {
       setSelectedVariant(foundVariant);
+      selectedVariantQuantityInCart = carteItems.find(item => item.id == foundVariant.id)?.quantity ?? 0;
+      console.log({carteItems : carteItems});
+      console.log({carteItemInCart:carteItems.find(item => item.id === foundVariant.id)});
+      console.log(selectedVariantQuantityInCart)
+      //console.log(selectedVariantQuantityInCart);
     }else{
       const emptyVariant = {id:null,color:selectedVariant.color,size:selectedVariant.size,quantity:0};
       setSelectedVariant(emptyVariant);
     }
   },[selectedVariant?.color,selectedVariant?.size])
+  //get item from cart
+  useEffect(()=>{
 
+  },[carteItems])
   //Temp
   // useEffect(()=>{
   //   console.log(productWithDetailles?.images);
@@ -260,7 +271,7 @@ const QuickViewModal = () => {
                 <div className="flex flex-col gap-5">
                   {productWithDetailles.images?.map((img, key) => (
                     <button
-                      onClick={() => setActivePreview(img)}
+                      onClick={() => setPreviewImageIndex(key)}
                       key={key}
                       className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
                         activePreview === key && "border-2 border-blue"
@@ -280,7 +291,7 @@ const QuickViewModal = () => {
                 <div className="relative z-1 overflow-hidden flex items-center justify-center w-full sm:min-h-[508px] bg-gray-1 rounded-lg border border-gray-3">
                   <div>
                     <button
-                      onClick={handlePreviewSlider}
+                      onClick={zoomCurrentPreviewImage}
                       aria-label="button for zoom"
                       className="gallery__Image w-10 h-10 rounded-[5px] bg-white shadow-1 flex items-center justify-center ease-out duration-200 text-dark hover:text-blue absolute top-4 lg:top-8 right-4 lg:right-8 z-50"
                     >
@@ -301,12 +312,15 @@ const QuickViewModal = () => {
                       </svg>
                     </button>
 
-                    <Image
-                      src={activePreview}
+                    {productWithDetailles?.images &&
+                      productWithDetailles.images[previewImageIndex] &&
+                      <Image
+                      src={productWithDetailles?.images[previewImageIndex]}
                       alt="products-details"
                       width={400}
                       height={400}
                     />
+                    }
                   </div>
                 </div>
               </div>
@@ -318,7 +332,7 @@ const QuickViewModal = () => {
               </span> */}
 
               <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
-                {product.title}
+                {product.name}
               </h3>
 
               {/* <div className="flex flex-wrap items-center gap-5"> */}
@@ -573,7 +587,7 @@ const QuickViewModal = () => {
                       />
                     </svg>
                   
-                    <svg className={`${selectedVariant ? (selectedVariant.quantity >= quantity ? '' : 'hidden') : ''}`} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`${selectedVariant ? (selectedVariant.quantity - selectedVariantQuantityInCart>= quantity  ? '' : 'hidden') : ''}`} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="9" stroke="#22AD5C" />
                         
                         <path
@@ -581,11 +595,11 @@ const QuickViewModal = () => {
                         fill="#22AD5C"
                       />
                     </svg>
-                    <span className="font-medium text-dark"> {selectedVariant ? selectedVariant.quantity + ' available In Stock' : 'Out of stock'} </span>
+                    <span className="font-medium text-dark"> {selectedVariant?.quantity - selectedVariantQuantityInCart>= quantity  ? 'In Stock' : selectedVariant.quantity + ' Available in stock'} </span>
                   </div>
 
                   {/* Out of stock */}
-                  <div className={`flex items-center gap-1 ${selectedVariant?.quantity === 0 ? '' : 'hidden'}`}>
+                  <div className={`flex items-center gap-1 ${selectedVariant?.quantity - selectedVariantQuantityInCart === 0 ? '' : 'hidden'}`}>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="9" stroke="#FF3B30" />
                         <path
