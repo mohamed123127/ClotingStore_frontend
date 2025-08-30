@@ -1,14 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import Settings from '../../../settings.json';
+import { useTranslation } from 'next-i18next';
 
 const PriceDropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
-
+    const { t } = useTranslation();
+  const [priceRange, setPriceRange] = useState({min:0, max:100});
   const [selectedPrice, setSelectedPrice] = useState({
     from: 0,
     to: 100,
   });
+
+  useEffect(()=>{
+    async function fetchMinAndMaxPrice() {
+      const response = await fetch(Settings.Api + 'products/MaxAndMinPrice');
+      // console.log(response);
+      if(!response.ok){
+        throw new Error('Failed to fetch highest price');
+      }
+
+      const data = await response.json();
+      setPriceRange({min:data.minPrice, max: data.maxPrice});
+    }
+
+    fetchMinAndMaxPrice();
+    // setSelectedPrice({from: priceRange.min, to: priceRange.max});
+  },[])
+
+  useEffect(() => {
+    setSelectedPrice({
+      from: priceRange.min,
+      to: priceRange.max,
+    });
+  }, [priceRange.min, priceRange.max]);
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
@@ -16,7 +42,7 @@ const PriceDropdown = () => {
         onClick={() => setToggleDropdown(!toggleDropdown)}
         className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
       >
-        <p className="text-dark">Price</p>
+        <p className="text-dark">{t('Price')}</p>
         <button
           onClick={() => setToggleDropdown(!toggleDropdown)}
           id="price-dropdown-btn"
@@ -49,12 +75,15 @@ const PriceDropdown = () => {
           <div className="price-range">
             <RangeSlider
               id="range-slider-gradient"
+              min={priceRange.min}
+              max={priceRange.max}
+              value={[selectedPrice.from, selectedPrice.to]}
               className="margin-lg"
-              step={'any'}
+              step={50}
               onInput={(e) =>
                 setSelectedPrice({
-                  from: Math.floor(e[0]),
-                  to: Math.ceil(e[1]),
+                  from:e[0],
+                  to: e[1],
                 })
               }
             />
@@ -62,7 +91,7 @@ const PriceDropdown = () => {
             <div className="price-amount flex items-center justify-between pt-4">
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  $
+                  DA
                 </span>
                 <span id="minAmount" className="block px-3 py-1.5">
                   {selectedPrice.from}
@@ -71,7 +100,7 @@ const PriceDropdown = () => {
 
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  $
+                  DA
                 </span>
                 <span id="maxAmount" className="block px-3 py-1.5">
                   {selectedPrice.to}

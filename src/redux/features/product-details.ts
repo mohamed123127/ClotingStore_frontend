@@ -12,6 +12,7 @@ const initialState = {
     description: "",
     price: 0,
     discountedPrice: 0,
+    sex: "",
     previewImage:"",
   },
 } as InitialState;

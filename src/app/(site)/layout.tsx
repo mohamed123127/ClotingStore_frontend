@@ -32,7 +32,7 @@ export default function RootLayout({
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
- console.log(i18n.language);
+//  console.log(i18n.language);
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body>

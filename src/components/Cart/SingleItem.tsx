@@ -7,10 +7,12 @@ import {
 } from "@/redux/features/cart-slice";
 
 import Image from "next/image";
+import Swal from "sweetalert2";
+
 
 const SingleItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
-  console.log(item);
+  //console.log(item);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveFromCart = () => {
@@ -18,6 +20,18 @@ const SingleItem = ({ item }) => {
   };
 
   const handleIncreaseQuantity = () => {
+    if( item.availableQuantity && quantity >= item.availableQuantity ) {
+      Swal.fire({
+      title: "تنبيه",
+      text: `عدد القطع المتوفرة من هذا المنتج هو ${item.availableQuantity} فقط!`,
+      icon: "warning",
+      timer: 3000, // 3 ثواني
+      showConfirmButton: false, // يخفي زر "موافق"
+      timerProgressBar: true, // يظهر شريط وقت
+    });
+
+      return;
+    }
     setQuantity(quantity + 1);
     dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity + 1 }));
   };

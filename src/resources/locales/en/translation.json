@@ -74,6 +74,43 @@
     "ExchangePolicy": "Exchange Policy",
     "PurchaseAndDeliveryProcess": "Purchase & Delivery Process",
     "HelpAndSupport": "Help & Support",
-    "FAQs": "FAQ’s"
+    "FAQs": "FAQ’s",
+
+    "M": "Boys",
+  "F": "Girls",
+  "U": "Both",
+
+  "Filters": "Filters",
+  "CleanAll": "Clear All",
+  "Category": "Category",
+  "Gender": "Gender",
+  "Size": "Size",
+  "Colors": "Colors",
+  "Price": "Price",
+  "displayingProducts": "Displaying :from–:to of :total products",
+  "ExploreAllProducts": "Explore All Products",
+
+  "OrderSummary": "Order Summary",
+  "Product": "Product",
+  "Subtotal": "Subtotal",
+  "Total": "Total",
+  "ProcessToCheckout": "Proceed to Checkout",
+
+  "CartView": "Cart View",
+  "ViewCart": "View Cart",
+  "Checkout": "Checkout",
+  "YourCartIsEmpty": "Your cart is empty",
+  "ContinueShopping": "Continue Shopping",
+
+  "nom": "Last Name",
+    "prenom": "First Name",
+    "numeroTelephone": "Phone Number",
+    "willaya": "Province",
+    "commune": "Municipality",
+    "agence": "Agency",
+     "homeDelivery": "Home Delivery",
+  "pickupPointDelivery": "Company Pickup Delivery",
+    "deliveryMethod": "Delivery Method",
+      "orderAndDeliveryDetails": "Order and Delivery Details"
 
 }

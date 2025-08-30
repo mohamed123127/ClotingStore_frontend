@@ -40,7 +40,7 @@ const CustomSelect = ({ options }) => {
         }`}
         onClick={toggleDropdown}
       >
-        {t(selectedOption.label)}
+        {t(selectedOption.name)}
       </div>
       <div className={`select-items ${isOpen ? "" : "select-hide"}`}>
         {options.filter((option)=>option!=selectedOption).map((option, index) => (
@@ -51,7 +51,7 @@ const CustomSelect = ({ options }) => {
               selectedOption === option ? "same-as-selected" : ""
             }`}
           >
-            {t(option.label)}
+            {t(option.name)}
           </div>
         ))}
       </div>

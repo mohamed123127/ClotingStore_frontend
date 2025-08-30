@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import {  useState } from "react";
+import { useTranslation } from "next-i18next";
 
 const CategoryItem = ({ category }) => {
   const [selected, setSelected] = useState(false);
+    const { t } = useTranslation();
+
+  // console.log(category);
   return (
     <button
       className={`${
@@ -35,7 +39,7 @@ const CategoryItem = ({ category }) => {
           </svg>
         </div>
 
-        <span>{category.name}</span>
+        <span>{t(category.name)}</span>
       </div>
 
       <span
@@ -43,7 +47,7 @@ const CategoryItem = ({ category }) => {
           selected ? "text-white bg-blue" : "bg-gray-2"
         } inline-flex rounded-[30px] text-custom-xs px-2 ease-out duration-200 group-hover:text-white group-hover:bg-blue`}
       >
-        {category.products}
+        {category.productsCount}
       </span>
     </button>
   );
@@ -51,6 +55,7 @@ const CategoryItem = ({ category }) => {
 
 const CategoryDropdown = ({ categories }) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
+  const { t } = useTranslation();
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
@@ -63,7 +68,7 @@ const CategoryDropdown = ({ categories }) => {
           toggleDropdown && "shadow-filter"
         }`}
       >
-        <p className="text-dark">Category</p>
+        <p className="text-dark">{t('Category')}</p>
         <button
           aria-label="button for category dropdown"
           className={`text-dark ease-out duration-200 ${

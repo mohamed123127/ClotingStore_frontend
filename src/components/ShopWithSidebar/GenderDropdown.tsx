@@ -1,8 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
+import settings from "../../../settings.json"
 
-const GenderItem = ({ category }) => {
+const GenderItem = ({ gender , count }) => {
   const [selected, setSelected] = useState(false);
+  const { t } = useTranslation();
   return (
     <button
       className={`${
@@ -34,7 +37,7 @@ const GenderItem = ({ category }) => {
           </svg>
         </div>
 
-        <span>{category.name}</span>
+        <span>{t(gender)}</span>
       </div>
 
       <span
@@ -42,15 +45,34 @@ const GenderItem = ({ category }) => {
           selected ? "text-white bg-blue" : "bg-gray-2"
         } inline-flex rounded-[30px] text-custom-xs px-2 ease-out duration-200 group-hover:text-white group-hover:bg-blue`}
       >
-        {category.products}
+        {count}
       </span>
     </button>
   );
 };
 
-const GenderDropdown = ({ genders }) => {
+const GenderDropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
+    const [genders, setGenders] = useState([]);
+  const { t } = useTranslation();
 
+useEffect(()=>{
+    async function fetchGenders(){
+      const result = await fetch(settings.Api + "products/genders");
+      if(!result.ok){
+        return console.error("Failed to fetch genders");
+      }
+
+      const data = await result.json();
+      // console.log(data);
+      setGenders(data.genders);
+    }
+
+    fetchGenders();
+    //setSizes(["XS","S","M","L","XL","XXL"])
+  },[])
+
+    
   return (
     <div className="bg-white shadow-1 rounded-lg">
       <div
@@ -59,7 +81,7 @@ const GenderDropdown = ({ genders }) => {
           toggleDropdown && "shadow-filter"
         }`}
       >
-        <p className="text-dark">Gender</p>
+        <p className="text-dark">{t('Gender')}</p>
         <button
           onClick={() => setToggleDropdown(!toggleDropdown)}
           aria-label="button for gender dropdown"
@@ -91,9 +113,16 @@ const GenderDropdown = ({ genders }) => {
           toggleDropdown ? "flex" : "hidden"
         }`}
       >
-        {genders.map((gender, key) => (
-          <GenderItem key={key} category={gender} />
-        ))}
+        {
+          genders.map((gender,key)=>{
+            return <GenderItem key={key} gender={gender.name} count={gender.count}/>
+          })
+        }
+        {/* {genders.map((gender, key) => ( */}
+          {/* <GenderItem gender="Male" count={genders.M}/>
+          <GenderItem gender="Female" count={genders.F}/>
+          <GenderItem gender="Unisex" count={genders.U}/> */}
+        {/* ))} */}
       </div>
     </div>
   );

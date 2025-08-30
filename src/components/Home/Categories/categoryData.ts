@@ -1,3 +1,13 @@
+import settings from "../../../../settings.json";
+
+export async function getCategories() {
+  const response = await fetch(settings.Api + "categories");
+  console.log(response);
+  if (!response.ok) throw new Error("Failed to fetch categories");
+  const data = await response.json();
+  return data.Categories;
+}
+
 const data = [
   {
     title: "Boys",
