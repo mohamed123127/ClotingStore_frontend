@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import CustomSelect from "./CustomSelect";
 import CategoryDropdown from "./CategoryDropdown";
@@ -7,10 +7,14 @@ import GenderDropdown from "./GenderDropdown";
 import SizeDropdown from "./SizeDropdown";
 import ColorsDropdwon from "./ColorsDropdwon";
 import PriceDropdown from "./PriceDropdown";
-import {getProducts} from "../Shop/shopData";
+import {getProducts,totalProducts,totalPages} from "../Shop/shopData";
 import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
 import { Product } from "@/types/product";
+import { useAppSelector } from "@/redux/store";
+import { Category } from "@/types/category";
+import { useTranslation } from "react-i18next";
+
 
 const ShopWithSidebar = () => {
   const [productStyle, setProductStyle] = useState("grid");
@@ -18,7 +22,10 @@ const ShopWithSidebar = () => {
   const [shopData, setShopData] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [stickyMenu, setStickyMenu] = useState(false);
-  
+  const [paginationInfo,setPaginationInfo] = useState({currentPage:1,perPage:12,totalPages:10});
+  const categories = useAppSelector((state) => state.categoriesSlice.list) as Category[];
+  const { t } = useTranslation();
+
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
       setStickyMenu(true);
@@ -27,59 +34,49 @@ const ShopWithSidebar = () => {
     }
   };
 
-  const options = [
-    { label: "Latest Products", value: "0" },
-    { label: "Best Selling", value: "1" },
-    { label: "Old Products", value: "2" },
-  ];
+  // const options = [
+  //   { label: "Latest Products", value: "0" },
+  //   { label: "Best Selling", value: "1" },
+  //   { label: "Old Products", value: "2" },
+  // ];
 
-  const categories = [
-    {
-      name: "Desktop",
-      products: 10,
-      isRefined: true,
-    },
-    {
-      name: "Laptop",
-      products: 12,
-      isRefined: false,
-    },
-    {
-      name: "Monitor",
-      products: 30,
-      isRefined: false,
-    },
-    {
-      name: "UPS",
-      products: 23,
-      isRefined: false,
-    },
-    {
-      name: "Phone",
-      products: 10,
-      isRefined: false,
-    },
-    {
-      name: "Watch",
-      products: 13,
-      isRefined: false,
-    },
-  ];
+  // const categories = [
+  //   {
+  //     name: "Desktop",
+  //     products: 10,
+  //     isRefined: true,
+  //   },
+  //   {
+  //     name: "Laptop",
+  //     products: 12,
+  //     isRefined: false,
+  //   },
+  //   {
+  //     name: "Monitor",
+  //     products: 30,
+  //     isRefined: false,
+  //   },
+  //   {
+  //     name: "UPS",
+  //     products: 23,
+  //     isRefined: false,
+  //   },
+  //   {
+  //     name: "Phone",
+  //     products: 10,
+  //     isRefined: false,
+  //   },
+  //   {
+  //     name: "Watch",
+  //     products: 13,
+  //     isRefined: false,
+  //   },
+  // ];
 
-  const genders = [
-    {
-      name: "Men",
-      products: 10,
-    },
-    {
-      name: "Women",
-      products: 23,
-    },
-    {
-      name: "Unisex",
-      products: 8,
-    },
-  ];
+  const genders = shopData.reduce((acc, item) => {
+  acc[item.sex] = (acc[item.sex] || 0) + 1;
+  return acc;
+}, {});
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
@@ -101,21 +98,36 @@ const ShopWithSidebar = () => {
   });
 
   useEffect(() => {
-    getProducts()
+    getProducts(paginationInfo.currentPage,paginationInfo.perPage)
       .then((data) => {
         setShopData(data);
+        paginationInfo.totalPages = totalPages;
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    getProducts(paginationInfo.currentPage,paginationInfo.perPage)
+    .then((data) => {
+        setShopData(data);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  },[paginationInfo.currentPage])
+
+  // useEffect(() => {
+  //   console.log(shopData);
+  //   console.log(genders);
+  // },[genders]);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <>
       <Breadcrumb
-        title={"Explore All Products"}
-        pages={["shop", "/", "shop with sidebar"]}
+        title={"ExploreAllProducts"}
+        pages={["Shop"]}
       />
       <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -165,8 +177,8 @@ const ShopWithSidebar = () => {
                   {/* <!-- filter box --> */}
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
                     <div className="flex items-center justify-between">
-                      <p>Filters:</p>
-                      <button className="text-blue">Clean All</button>
+                      <p>{t('Filters')}:</p>
+                      <button className="text-blue">{t('CleanAll')}</button>
                     </div>
                   </div>
 
@@ -174,7 +186,7 @@ const ShopWithSidebar = () => {
                   <CategoryDropdown categories={categories} />
 
                   {/* <!-- gender box --> */}
-                  <GenderDropdown genders={genders} />
+                  <GenderDropdown />
 
                   {/* // <!-- size box --> */}
                   <SizeDropdown />
@@ -191,20 +203,23 @@ const ShopWithSidebar = () => {
 
             {/* // <!-- Content Start --> */}
             <div className="xl:max-w-[870px] w-full">
-              <div className="rounded-lg bg-white shadow-1 pl-3 pr-2.5 py-2.5 mb-6">
-                <div className="flex items-center justify-between">
+              {/* <div className="rounded-lg bg-white shadow-1 pl-3 pr-2.5 py-2.5 mb-6">
+                <div className="flex items-center justify-between"> */}
                   {/* <!-- top bar left --> */}
-                  <div className="flex flex-wrap items-center gap-4">
-                    <CustomSelect options={options} />
+                  {/* <div className="flex flex-wrap items-center gap-4"> */}
+                    {/* <CustomSelect options={options} /> */}
 
-                    <p>
-                      Showing <span className="text-dark">9 of 50</span>{" "}
-                      Products
+                    {/* <p>
+{t('displayingProducts', { 
+  from: (paginationInfo.currentPage - 1) * paginationInfo.perPage + 1, 
+  to: Math.min(paginationInfo.currentPage * paginationInfo.perPage, totalProducts), 
+  total: totalProducts 
+})}
                     </p>
-                  </div>
+                  </div> */}
 
                   {/* <!-- top bar right --> */}
-                  <div className="flex items-center gap-2.5">
+                  {/* <div className="flex items-center gap-2.5">
                     <button
                       onClick={() => setProductStyle("grid")}
                       aria-label="button for product grid tab"
@@ -280,9 +295,9 @@ const ShopWithSidebar = () => {
                         />
                       </svg>
                     </button>
-                  </div>
-                </div>
-              </div>
+                  </div> */}
+                {/* </div>
+              </div> */}
 
               {/* <!-- Products Grid Tab Content Start --> */}
               <div
@@ -311,11 +326,16 @@ const ShopWithSidebar = () => {
                         id="paginationLeft"
                         aria-label="button for pagination left"
                         type="button"
-                        disabled
                         className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px disabled:text-gray-4"
+                        disabled={paginationInfo.currentPage === 1}
+                        onClick={()=>{
+                          if(paginationInfo.currentPage > 1){
+                            setPaginationInfo((prev)=>({...prev, currentPage: prev.currentPage - 1}))
+                          }
+                        }}
                       >
                         <svg
-                          className="fill-current"
+                          className="fill-current rtl:rotate-180"
                           width="18"
                           height="18"
                           viewBox="0 0 18 18"
@@ -329,53 +349,23 @@ const ShopWithSidebar = () => {
                         </svg>
                       </button>
                     </li>
-
-                    <li>
+                    {Array.from(
+                      { length: paginationInfo.totalPages > 3 ? 3 : paginationInfo.totalPages },
+                      (_, i) => (
+                        <li key={i+1}>
                       <a
                         href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] bg-blue text-white hover:text-white hover:bg-blue"
+                        className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue-light ${paginationInfo.currentPage === i+1 ? 'text-white bg-blue' : ''}`}
+                        onClick={()=>setPaginationInfo({...paginationInfo, currentPage: i+1})}
                       >
-                        1
+                        {i+1}
                       </a>
                     </li>
+                      )
+                    )}
+                    
 
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        2
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        3
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        4
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        5
-                      </a>
-                    </li>
-
-                    <li>
+                    <li className={`${paginationInfo.totalPages > 4 ? '' : 'hidden'}`}>
                       <a
                         href="#"
                         className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
@@ -384,12 +374,13 @@ const ShopWithSidebar = () => {
                       </a>
                     </li>
 
-                    <li>
+                    <li className={`${paginationInfo.totalPages > 3 ? '' : 'hidden'}`}>
                       <a
                         href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
+                        className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue ${paginationInfo.currentPage === paginationInfo.totalPages ? 'text-white bg-blue' : ''}`}
+                        onClick={()=>setPaginationInfo({...paginationInfo, currentPage: paginationInfo.totalPages})}
                       >
-                        10
+                        {paginationInfo.totalPages}
                       </a>
                     </li>
 
@@ -398,10 +389,16 @@ const ShopWithSidebar = () => {
                         id="paginationLeft"
                         aria-label="button for pagination left"
                         type="button"
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
+                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4"
+                        disabled={paginationInfo.currentPage === paginationInfo.totalPages}
+                        onClick={()=>{
+                            if(paginationInfo.currentPage < paginationInfo.totalPages){
+                              setPaginationInfo((prev)=>({...prev, currentPage: prev.currentPage + 1}))
+                            }
+                          }}
                       >
                         <svg
-                          className="fill-current"
+                          className={`fill-current rtl:rotate-180`}
                           width="18"
                           height="18"
                           viewBox="0 0 18 18"

@@ -1,12 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import settings from "@/../../settings.json";
+import { useTranslation } from "next-i18next";
 
 const ColorsDropdwon = () => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
   const [activeColor, setActiveColor] = useState("blue");
+  const [colors,setColors] = useState<string[]>([]);
+    const { t } = useTranslation();
 
-  const colors = ["red", "blue", "orange", "pink", "purple"];
+  //const colorss = ["red", "blue", "orange", "pink", "purple"];
 
+useEffect(()=>{
+    async function fetchColors(){
+      const result = await fetch(settings.Api + "variants/colors");
+      if(!result.ok){
+        return console.error("Failed to fetch sizes");
+      }
+
+      const data = await result.json();
+      // console.log(data);
+      setColors(data.colors);
+    }
+
+    fetchColors();
+    //setSizes(["XS","S","M","L","XL","XXL"])
+  },[])
+
+    useEffect(()=>{
+      setActiveColor(colors[0]);
+    },[])
   return (
     <div className="bg-white shadow-1 rounded-lg">
       <div
@@ -15,7 +38,7 @@ const ColorsDropdwon = () => {
           toggleDropdown && "shadow-filter"
         }`}
       >
-        <p className="text-dark">Colors</p>
+        <p className="text-dark">{t('Colors')}</p>
         <button
           aria-label="button for colors dropdown"
           className={`text-dark ease-out duration-200 ${
@@ -61,16 +84,18 @@ const ColorsDropdwon = () => {
                 onChange={() => setActiveColor(color)}
               />
               <div
-                className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${
-                  activeColor === color && "border"
-                }`}
-                style={{ borderColor: `${color}` }}
-              >
-                <span
-                  className="block w-3 h-3 rounded-full"
-                  style={{ backgroundColor: `${color}` }}
-                ></span>
-              </div>
+  className={`flex items-center justify-center w-8 h-8 rounded-full `}
+  style={{ borderColor: activeColor === color ? color : undefined }}
+>
+  <span
+    className="block w-6 h-6 rounded-full"
+    style={{
+      backgroundColor: color,
+      border: color.toLowerCase() === "white" ? "1px solid #ccc" : "none",
+    }}
+  ></span>
+</div>
+
             </div>
           </label>
         ))}

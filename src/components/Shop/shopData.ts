@@ -1,18 +1,26 @@
 import { Product } from "@/types/product";
 import settings from "../../../settings.json";
 
-export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(settings.Api + "products");
+export let totalProducts = 0;
+export let totalPages = 0;
+
+export async function getProducts(pageNumber,perPage): Promise<Product[]> {
+  const response = await fetch(settings.Api + "products?page=" + pageNumber + "&per_page=" + perPage);
+  // console.log(response);
   if (!response.ok) throw new Error("Failed to fetch products");
   const data = await response.json();
+  //console.log(data);
   const products = data.products;
-
+  totalProducts = data.total_products;
+  totalPages = data.last_page;
+  //console.log(data.products);
   return products.map((p: any) : Product => ({
+    id: p.id, 
     name: p.name,
     description: p.description,
     price: p.price,
     discountedPrice: null,
-    id: p.id, 
+    sex: p.sex,
     previewImage : p.preview_image
   }));
 }

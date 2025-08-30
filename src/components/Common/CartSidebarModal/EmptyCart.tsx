@@ -1,9 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import { useTranslation } from "next-i18next";
 
 const EmptyCart = () => {
   const { closeCartModal } = useCartModalContext();
+  const { t } = useTranslation();
 
   return (
     <div className="text-center">
@@ -38,14 +40,14 @@ const EmptyCart = () => {
         </svg>
       </div>
 
-      <p className="pb-6">Your cart is empty!</p>
+      <p className="pb-6">{t('YourCartIsEmpty')}!</p>
 
       <Link
         onClick={() => closeCartModal()}
         href="/shop-with-sidebar"
         className="w-full lg:w-10/12 mx-auto flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
       >
-        Continue Shopping
+        {t('ContinueShopping')}
       </Link>
     </div>
   );

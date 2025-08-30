@@ -72,5 +72,44 @@
     "ExchangePolicy": "سياسة الاستبدال",
     "PurchaseAndDeliveryProcess": "عملية الشراء والتوصيل",
     "HelpAndSupport": "المساعدة والدعم",
-    "FAQs": "الأسئلة الشائعة"
+    "FAQs": "الأسئلة الشائعة",
+
+    "M": "الأولاد",
+    "F": "البنات",
+    "U": "كلاهما",
+
+    "Filters": "الفلاتر",
+  "CleanAll": "مسح الكل",
+  "Category": "الفئة",
+  "Gender": "الجنس",
+  "Size": "المقاس",
+  "Colors": "الألوان",
+  "Price": "السعر",
+  "displayingProducts": "عرض المنتجات من :from إلى :to من أصل :total",
+
+  "ExploreAllProducts": "استكشف جميع المنتجات",
+
+  "OrderSummary": "ملخص الطلب",
+  "Product": "المنتج",
+  "Subtotal": "المجموع الفرعي",
+  "Total": "المجموع الكلي",
+  "ProcessToCheckout": "المتابعة إلى الدفع",
+
+  "CartView": "ملخص السلة",
+  "ViewCart": "عرض السلة",
+  "Checkout": "الدفع",
+  "YourCartIsEmpty": "سلتك فارغة",
+  "ContinueShopping": "مواصلة التسوق",
+
+  "nom": "الاسم",
+    "prenom": "اللقب",
+    "numeroTelephone": "رقم الهاتف",
+    "willaya": "الولاية",
+    "commune": "البلدية",
+    "agence": "الوكالة",
+    "homeDelivery": "توصيل إلى المنزل",
+  "pickupPointDelivery": "توصيل إلى مقر الشركة",
+    "deliveryMethod": "طريقة التوصيل",
+  "orderAndDeliveryDetails": "تفاصيل الطلب والتوصيل"
+
 }

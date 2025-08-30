@@ -74,5 +74,44 @@
     "ExchangePolicy": "Politique d'échange",
     "PurchaseAndDeliveryProcess": "Processus d'achat et de livraison",
     "HelpAndSupport": "Aide & Support",
-    "FAQs": "FAQ’s"
+    "FAQs": "FAQ’s",
+
+    "M": "Garçons",
+  "F": "Filles",
+  "U": "Les deux",
+
+  "Filters": "Filtres",
+  "CleanAll": "Tout effacer",
+  "Category": "Catégorie",
+  "Gender": "Sexe",
+  "Size": "Taille",
+  "Colors": "Couleurs",
+  "Price": "Prix",
+  "displayingProducts": "Affichage de :from–:to sur :total produits",
+
+  "ExploreAllProducts": "Explorer tous les produits",
+
+  "OrderSummary": "Résumé de la commande",
+  "Product": "Produit",
+  "Subtotal": "Sous-total",
+  "Total": "Total",
+  "ProcessToCheckout": "Passer à la caisse",
+
+  "CartView": "Vue du panier",
+  "ViewCart": "Voir le panier",
+  "Checkout": "Paiement",
+  "YourCartIsEmpty": "Votre panier est vide",
+  "ContinueShopping": "Continuer vos achats",
+
+  "nom": "Nom",
+    "prenom": "Prénom",
+    "numeroTelephone": "Numéro de téléphone",
+    "willaya": "Wilaya",
+    "commune": "Commune",
+    "agence": "Agence",
+  "homeDelivery": "Livraison à domicile",
+  "pickupPointDelivery": "Livraison au siège de l'entreprise",
+    "deliveryMethod": "Mode de livraison",
+      "orderAndDeliveryDetails": "Détails de la commande et de la livraison"
+
 }

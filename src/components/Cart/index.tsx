@@ -6,6 +6,8 @@ import { useAppSelector } from "@/redux/store";
 import SingleItem from "./SingleItem";
 import Breadcrumb from "../Common/Breadcrumb";
 import Link from "next/link";
+import Shipping from "../Checkout/Shipping";
+import ShippingForm from "./ShippingForm";
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cartReducer.items);
@@ -66,8 +68,9 @@ const Cart = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11 mt-9">
-              <Discount />
-              <OrderSummary />
+               {/* <Discount /> */}
+              {/* <OrderSummary /> */} 
+              <ShippingForm />
             </div>
           </div>
         </section>

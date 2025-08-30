@@ -4,15 +4,20 @@ import Link from "next/link";
 import CustomSelect from "./CustomSelect";
 import { menuData } from "./menuData";
 import Dropdown from "./Dropdown";
-import { useAppSelector } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { useAppSelector , useAppDispatch } from "@/redux/store";
+import { fetchCategories } from "@/redux/features/categories-slice";
+import { useSelector  } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
 import Languages from "./Languages";
 import { useTranslation } from 'next-i18next';
+import { Category } from "@/types/category";
+
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const categories = useAppSelector((state) => state.categoriesSlice.list) as Category[];
   const [searchQuery, setSearchQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
@@ -39,12 +44,15 @@ const Header = () => {
     window.addEventListener("scroll", handleStickyMenu);
   });
 
+  useEffect(()=>{
+    dispatch(fetchCategories());
+  },[dispatch])
+
   const options = [
-    { label: "AllCategories", value: "0" },
-    { label: "Boys", value: "1" },
-    { label: "Girls", value: "2" },
-    { label: "TwoItems", value: "3" },
-    { label: "ThreeItems", value: "4" }
+    { name: "AllCategories", value: "0" },
+    ...categories.map((category) => ({
+      name: category.name, value: category.id.toString()
+    }))
   ];
 
   return (

@@ -34,7 +34,7 @@ const QuickViewModal = () => {
   const product = useAppSelector((state) => state.quickViewReducer.value);
   const [activePreview, setActivePreview] = useState(product?.previewImage);
   const isAllLoaded = !loading.colors && !loading.sizes && !loading.images;
-  let selectedVariantQuantityInCart = 0;
+  const [selectedVariantQuantityInCart,setSelectedVariantQuantityInCart] = useState(0);
   // preview modal
   const zoomCurrentPreviewImage = () => {
     dispatch(updateproductDetails(product));
@@ -51,6 +51,7 @@ const QuickViewModal = () => {
         price:parseInt(productWithDetailles.price.replace(/[,]/g, ''),10),
         color:selectedVariant.color,
         size:selectedVariant.size,
+        availableQuantity:selectedVariant.quantity,
         image:productWithDetailles.previewImage,
         quantity,
       })
@@ -103,6 +104,10 @@ const QuickViewModal = () => {
         setProductWithDetailles((prev)=>({...prev,variants}));
         //console.log(variants);
         setSelectedVariant(variants[0]);
+        const quantityInCart = carteItems.find(item => item.id == variants[0].id)?.quantity ?? 0;
+        //console.log("selectedVariant",variants[0]);
+        setSelectedVariantQuantityInCart(quantityInCart);
+
       } catch (error) {
         console.error("Error fetching variants:", error);
       }
@@ -176,20 +181,18 @@ const QuickViewModal = () => {
     const foundVariant = productWithDetailles.variants.find(v => v.color == selectedVariant.color && v.size == selectedVariant.size);
     if(foundVariant) {
       setSelectedVariant(foundVariant);
-      selectedVariantQuantityInCart = carteItems.find(item => item.id == foundVariant.id)?.quantity ?? 0;
-      console.log({carteItems : carteItems});
-      console.log({carteItemInCart:carteItems.find(item => item.id === foundVariant.id)});
-      console.log(selectedVariantQuantityInCart)
-      //console.log(selectedVariantQuantityInCart);
+      const quantityInCart = carteItems.find(item => item.id == foundVariant.id)?.quantity ?? 0;
+      setSelectedVariantQuantityInCart(quantityInCart);
+      //console.log("quantityInCart",quantityInCart);
     }else{
       const emptyVariant = {id:null,color:selectedVariant.color,size:selectedVariant.size,quantity:0};
       setSelectedVariant(emptyVariant);
     }
   },[selectedVariant?.color,selectedVariant?.size])
   //get item from cart
-  useEffect(()=>{
-
-  },[carteItems])
+  // useEffect(()=>{
+  //   console.log(carteItems);
+  // },[carteItems])
   //Temp
   // useEffect(()=>{
   //   console.log(productWithDetailles?.images);
@@ -576,8 +579,8 @@ const QuickViewModal = () => {
 
                 <div className={`flex items-center gap-2`}>
                   {/* when quantity grether than 0 */}
-                  <div className={`flex items-center gap-1 ${selectedVariant?.quantity === 0 ? 'hidden' : ''}`}>
-                    <svg className={`${selectedVariant ? (selectedVariant.quantity < quantity ? '' : 'hidden') : ''}`} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <div className={`flex items-center gap-1 ${selectedVariant?.quantity == 0 ? 'hidden' : ''}`}>
+                    <svg className={`${selectedVariant ? (selectedVariant.quantity - selectedVariantQuantityInCart < quantity ? '' : 'hidden') : ''}`} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="10" cy="10" r="9" stroke="#FF3B30" />
                       <path
                         d="M13.5 6.5L6.5 13.5M6.5 6.5L13.5 13.5"
@@ -599,7 +602,7 @@ const QuickViewModal = () => {
                   </div>
 
                   {/* Out of stock */}
-                  <div className={`flex items-center gap-1 ${selectedVariant?.quantity - selectedVariantQuantityInCart === 0 ? '' : 'hidden'}`}>
+                  <div className={`flex items-center gap-1 ${selectedVariant?.quantity == 0 ? '' : 'hidden'}`}>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="10" cy="10" r="9" stroke="#FF3B30" />
                         <path
@@ -617,9 +620,9 @@ const QuickViewModal = () => {
 
               <div className="flex flex-wrap items-center gap-4">
                 <button
-                  disabled={quantity === 0 && true}
+                  disabled={selectedVariant?.quantity - selectedVariantQuantityInCart < quantity}
                   onClick={() => handleAddToCart()}
-                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark
+                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark disabled:text-gray-4 disabled:cursor-not-allowed disabled:bg-gray-2
                   `}
                 >
                   Add to Cart
