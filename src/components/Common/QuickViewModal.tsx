@@ -34,7 +34,7 @@ const QuickViewModal = () => {
   const product = useAppSelector((state) => state.quickViewReducer.value);
   const [activePreview, setActivePreview] = useState(product?.previewImage);
   const isAllLoaded = !loading.colors && !loading.sizes && !loading.images;
-  let selectedVariantQuantityInCart = 0;
+  const [selectedVariantQuantityInCart,setSelectedVariantQuantityInCart] = useState(0);
   // preview modal
   const zoomCurrentPreviewImage = () => {
     dispatch(updateproductDetails(product));
@@ -176,7 +176,8 @@ const QuickViewModal = () => {
     const foundVariant = productWithDetailles.variants.find(v => v.color == selectedVariant.color && v.size == selectedVariant.size);
     if(foundVariant) {
       setSelectedVariant(foundVariant);
-      selectedVariantQuantityInCart = carteItems.find(item => item.id == foundVariant.id)?.quantity ?? 0;
+      const x = carteItems.find(item => item.id == foundVariant.id)?.quantity ?? 0;
+      setSelectedVariantQuantityInCart(x);
       console.log({carteItems : carteItems});
       console.log({carteItemInCart:carteItems.find(item => item.id === foundVariant.id)});
       console.log(selectedVariantQuantityInCart)
