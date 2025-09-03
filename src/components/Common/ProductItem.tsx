@@ -23,22 +23,22 @@ const ProductItem = ({ item }: { item: Product }) => {
 
   // add to cart
   const handleAddToCart = () => {
-    dispatch(
-      addItemToCart({
-        ...item,
-        quantity: 1,
-      })
-    );
+    // dispatch(
+    //   addItemToCart({
+    //     ...item,
+    //     quantity: 1,
+    //   })
+    // );
   };
 
   const handleItemToWishList = () => {
-    dispatch(
-      addItemToWishlist({
-        ...item,
-        status: "available",
-        quantity: 1,
-      })
-    );
+    // dispatch(
+    //   addItemToWishlist({
+    //     ...item,
+    //     status: "available",
+    //     quantity: 1,
+    //   })
+    // );
   };
 
   const handleProductDetails = () => {
@@ -149,14 +149,13 @@ const ProductItem = ({ item }: { item: Product }) => {
           />
         </div>
 
-        <p className="text-custom-sm">({item.reviews})</p>
       </div>
 
       <h3
         className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
         onClick={() => handleProductDetails()}
       >
-        <Link href="/shop-details"> {item.title} </Link>
+        <Link href="/shop-details"> {item.name} </Link>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">

@@ -10,22 +10,22 @@ export async function getCategories() {
 
 const data = [
   {
-    title: "Boys",
+    name: "Boys",
     id: 1,
     img: "/images/categories/boy.png",
   },
   {
-    title: "Girls",
+    name: "Girls",
     id: 2,
     img: "/images/categories/girl.png",
   },
   {
-    title: "TwoItems",
+    name: "TwoItems",
     id: 3,
     img: "/images/categories/twoItem.png",
   },
   {
-    title: "ThreeItems",
+    name: "ThreeItems",
     id: 4,
     img: "/images/categories/3item.png",
   }

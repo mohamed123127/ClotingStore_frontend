@@ -141,7 +141,7 @@ const Categories = () => {
           >
             {data.map((item, key) => (
               <SwiperSlide key={key}>
-                <SingleItem item={item} />
+                <SingleItem item={{...item,productsCount:0}} />
               </SwiperSlide>
             ))}
           </Swiper>

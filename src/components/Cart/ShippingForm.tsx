@@ -30,14 +30,14 @@ const CustomerInformation = () => {
     );
 }
 
-const ShippingDetails = ({shippingMethod}) => {
+const ShippingDetails = ({shippingMethod,setShippingPrice}) => {
     const { t } = useTranslation();
     const [wilayas, setWilayas] = React.useState([]);
-    const [selectedWilaya,setSelectedWilaya] = useState("");
+    const [selectedWilayaId,setselectedWilayaId] = useState("");
     const [communes, setCommunes] = React.useState([]);
-    const [selectedCommune,setSelectedCommune] = useState("");
+    const [selectedCommuneId,setselectedCommuneId] = useState("");
     const [agences, setAgences] = React.useState([]);
-    const [selectedAgence,setSelectedAgence] = useState("");
+    const [selectedAgenceId,setselectedAgenceId] = useState("");
     const [address,setAddress] = useState("");
     const [agenceAddress,setAgenceAddress] = useState("");
     const [gps,setGps] = useState("");
@@ -56,7 +56,7 @@ const ShippingDetails = ({shippingMethod}) => {
             const data = await result.json();
             // console.log(data);
             setWilayas(data.wilayas);
-            //setSelectedWilaya("1");
+            //setselectedWilayaId("1");
         }
 
         getWilayas();
@@ -64,9 +64,9 @@ const ShippingDetails = ({shippingMethod}) => {
     //fetch communes
     useEffect(()=>{
         async function getCommunes() {
-            let url = `yalidine/communes/${selectedWilaya}`
+            let url = `yalidine/communes/${selectedWilayaId}`
             if(shippingMethod == "stopDesk"){
-                url = `yalidine/communes/${selectedWilaya}/hasAgence`
+                url = `yalidine/communes/${selectedWilayaId}/hasAgence`
             }
             const result = await fetch(settings.Api + url);
             if(!result.ok){
@@ -76,17 +76,22 @@ const ShippingDetails = ({shippingMethod}) => {
             const data = await result.json();
             // console.log(data);
             setCommunes(data.communes);
-            //setSelectedCommune("1");
+            //setselectedCommuneId("1");
         }
 
-        if (selectedWilaya)  getCommunes();
-        setSelectedAgence("");
+        if (selectedWilayaId){
+          getCommunes();
+          const selectedWilaya = wilayas.find((w)=>w.id == selectedWilayaId);
+          const shippingTarif = shippingMethod == "stopDesk" ? selectedWilaya.stopDeskTarif - 200 : selectedWilaya.homeTarif - 200;
+          setShippingPrice(shippingTarif);
+        } 
+        setselectedAgenceId("");
 
-    },[selectedWilaya,shippingMethod])
+    },[selectedWilayaId,shippingMethod])
     //fetch agences
     useEffect(()=>{
         async function getAgences() {
-            let url = `yalidine/agences/${selectedCommune}`
+            let url = `yalidine/agences/${selectedCommuneId}`
             
             const result = await fetch(settings.Api + url);
             if(!result.ok){
@@ -96,25 +101,25 @@ const ShippingDetails = ({shippingMethod}) => {
             const data = await result.json();
             // console.log(data);
             setAgences(data.agences);
-            //setSelectedCommune("1");
+            //setselectedCommuneId("1");
         }
 
-        if (shippingMethod == "stopDesk" && selectedCommune){
+        if (shippingMethod == "stopDesk" && selectedCommuneId){
           getAgences();
-          setSelectedAgence("");
+          setselectedAgenceId("");
         }
 
 
-    },[selectedCommune])
+    },[selectedCommuneId])
 
     useEffect(()=>{
-        const agence = agences.find((a)=>a.id == selectedAgence);
+        const agence = agences.find((a)=>a.id == selectedAgenceId);
         setAgenceAddress(agence?.address);
         setGps(agence?.gps);
         //console.log(agence);
-        //setAddress(selectedAgence.address);
+        //setAddress(selectedAgenceId.address);
       
-    },[selectedAgence])
+    },[selectedAgenceId])
 
     return(
         <div className='flex flex-col gap-4 bg-white rounded-lg w-full'>
@@ -123,8 +128,8 @@ const ShippingDetails = ({shippingMethod}) => {
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={selectedWilaya}
-                onChange={(e)=> setSelectedWilaya(e.target.value)}
+                value={selectedWilayaId}
+                onChange={(e)=> setselectedWilayaId(e.target.value)}
                 label={t('willaya')}
                  MenuProps={{
         PaperProps: {
@@ -147,8 +152,8 @@ const ShippingDetails = ({shippingMethod}) => {
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={selectedCommune}
-                onChange={(e)=> setSelectedCommune(e.target.value)}
+                value={selectedCommuneId}
+                onChange={(e)=> setselectedCommuneId(e.target.value)}
                 label={t('Communes')}
                  MenuProps={{
         PaperProps: {
@@ -174,8 +179,8 @@ const ShippingDetails = ({shippingMethod}) => {
               <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={selectedAgence}
-                  onChange={(e)=> setSelectedAgence(e.target.value)}
+                  value={selectedAgenceId}
+                  onChange={(e)=> setselectedAgenceId(e.target.value)}
                   label={t('agence')}
                   MenuProps={{
           PaperProps: {
@@ -193,13 +198,13 @@ const ShippingDetails = ({shippingMethod}) => {
               </Select>
               </FormControl>
 
-              {selectedAgence != "" && <IconButton color="primary" aria-label="Agencer location" 
+              {selectedAgenceId != "" && <IconButton color="primary" aria-label="Agencer location" 
                 style={{ padding: '0px'}} onClick={ShowLocation}
 >
                 <LocationOnIcon fontSize='large'/>
               </IconButton>}
               </div>
-               {selectedAgence != "" && <p>Address: {agenceAddress}</p>}
+               {selectedAgenceId != "" && <p>Address: {agenceAddress}</p>}
               </div>
             :
               <TextField id="outlined" value={address} onChange={(e)=> setAddress(e.target.value)} label={t('address')}/>
@@ -236,6 +241,7 @@ const ShippingMethod = ({shippingMethod,setShippingMethod}) => {
 const ShippingForm = () => {
     const {t} = useTranslation();
     const [shippingMethod,setShippingMethod] = useState("stopDesk");
+    const [shippingPrice,setShippingPrice] = useState(0);
   return (
     <div className='w-full flex flex-col md:flex-row h-auto gap-4'>
         <div className='flex flex-col bg-white rounded-lg w-full p-4 '>
@@ -243,10 +249,10 @@ const ShippingForm = () => {
             <ShippingMethod shippingMethod={shippingMethod} setShippingMethod={setShippingMethod}/>
             <div className='flex md:flex-row flex-col gap-4 mt-2'>
                 <CustomerInformation />
-                <ShippingDetails shippingMethod={shippingMethod}/>
+                <ShippingDetails shippingMethod={shippingMethod} setShippingPrice={setShippingPrice}/>
             </div>
         </div>
-        <OrderSummary ShippingFees={500}/>
+        <OrderSummary ShippingFees={shippingPrice}/>
     </div>
   )
 }

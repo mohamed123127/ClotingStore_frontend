@@ -1,5 +1,6 @@
 export type Category = {
   id: number;
   name: string;
+  img:string;
   productsCount: number;
 };
