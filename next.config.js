@@ -5,7 +5,11 @@ const nextConfig = {
     images: {
         domains: ["res.cloudinary.com"],
       },
-    i18n,
+    i18n: {
+  locales: ['en', 'fr','ar'],
+  defaultLocale: 'en',
+  localeDetection: false, // Disable automatic redirect
+}
 };
 
 module.exports = nextConfig;

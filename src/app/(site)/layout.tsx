@@ -21,6 +21,7 @@ import PreLoader from "@/components/Common/PreLoader";
 import { dir } from 'i18next';
 import i18n from '../../config/i18n';
 
+console.log("f");
 
 export default function RootLayout({
   children,
