@@ -7,7 +7,7 @@ const nextConfig = {
       },
     i18n: {
   locales: ['en', 'fr','ar'],
-  defaultLocale: 'en',
+  defaultLocale: 'ar',
   localeDetection: false, // Disable automatic redirect
 }
 };
