@@ -21,8 +21,6 @@ import PreLoader from "@/components/Common/PreLoader";
 import { dir } from 'i18next';
 import i18n from '../../config/i18n';
 
-console.log("f");
-
 export default function RootLayout({
   children,
 }: {
@@ -31,11 +29,14 @@ export default function RootLayout({
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    document.documentElement.lang = "ar";
+    document.documentElement.dir = "ar" === "ar" ? "rtl" : "ltr";
+    i18n.changeLanguage("ar");
     setTimeout(() => setLoading(false), 1000);
   }, []);
 //  console.log(i18n.language);
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="ar" suppressHydrationWarning={true}>
       <body>
         {loading ? (
           <PreLoader />
