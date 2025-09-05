@@ -82,7 +82,8 @@ const ShippingDetails = ({shippingMethod,setShippingPrice}) => {
         if (selectedWilayaId){
           getCommunes();
           const selectedWilaya = wilayas.find((w)=>w.id == selectedWilayaId);
-          const shippingTarif = shippingMethod == "stopDesk" ? selectedWilaya.stopDeskTarif - 200 : selectedWilaya.homeTarif - 200;
+          const shippingTarif = shippingMethod == "stopDesk" ? selectedWilaya.stopDeskTarif : selectedWilaya.homeTarif;
+          // console.log(shippingTarif);
           setShippingPrice(shippingTarif);
         } 
         setselectedAgenceId("");
