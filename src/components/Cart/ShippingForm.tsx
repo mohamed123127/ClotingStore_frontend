@@ -36,7 +36,7 @@ const CustomerInformation = () => {
     );
 }
 
-const ShippingDetails = () => {
+const ShippingDetails = ({setShippingFees}) => {
     const { t } = useTranslation();
     const [wilayas, setWilayas] = React.useState([]);
     //const [selectedWilaya,setSelectedWilaya] = useState("");
@@ -87,18 +87,22 @@ const ShippingDetails = () => {
             // console.log(data);
             setCommunes(data.communes);
             console.info(shippingDetaillies.wilaya);
-            console.info(shippingDetaillies.commune);
+            //console.info(shippingDetaillies.commune);
 
             //setSelectedCommune("1");
         }
-        if (shippingDetaillies.wilaya.name != "")  getCommunes();
+        if (shippingDetaillies.wilaya.name != ""){
+          getCommunes();
+          const shippingFees = wilayas.find((w) => w.id === shippingDetaillies.wilaya.id);
+          setShippingFees(shippingDetaillies.shippingMethod == "stopDesk" ? shippingFees?.stopDeskTarif : shippingFees?.homeTarif);
+        } 
           dispatch(setShippingDetaillies({...shippingDetaillies,agence:{id:null,name:""}}))
 
     },[shippingDetaillies.wilaya,shippingDetaillies.shippingMethod])
     //fetch agences
     useEffect(()=>{
         async function getAgences() {
-            console.info(shippingDetaillies.commune);
+            //console.info(shippingDetaillies.commune);
             let url = `yalidine/agences/${shippingDetaillies.commune.id}`
             
             const result = await fetch(settings.Api + url);
@@ -319,8 +323,8 @@ const OrderSummary = ({ShippingFees}) => {
     if(data.status == "success")
     Coockies.set("shippingLabel",data?.label);
     
+  console.log(data);
   }
-  //console.log(data);
 }
 
   const checkoutClick = async()=>{
@@ -392,6 +396,7 @@ const OrderSummary = ({ShippingFees}) => {
 
 const ShippingForm = () => {
     const {t} = useTranslation();
+    const [shippingFees,setShippingFees] = useState(0);
   return (
     <div className='w-full flex flex-col md:flex-row h-auto gap-4'>
         <div className='flex flex-col bg-white rounded-lg w-full p-4 '>
@@ -399,10 +404,10 @@ const ShippingForm = () => {
             <ShippingMethod/>
             <div className='flex md:flex-row flex-col gap-4 mt-2'>
                 <CustomerInformation />
-                <ShippingDetails/>
+                <ShippingDetails setShippingFees={setShippingFees}/>
             </div>
         </div>
-        <OrderSummary ShippingFees={shippingPrice}/>
+        <OrderSummary ShippingFees={shippingFees}/>
     </div>
   )
 }
