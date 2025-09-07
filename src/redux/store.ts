@@ -5,6 +5,7 @@ import cartReducer from "./features/cart-slice";
 import wishlistReducer from "./features/wishlist-slice";
 import productDetailsReducer from "./features/product-details";
 import categoriesSlice from "./features/categories-slice";
+import orderInfoSlice from "./features/order-slice";
 
 import { TypedUseSelectorHook, useSelector,useDispatch } from "react-redux";
 
@@ -15,6 +16,7 @@ export const store = configureStore({
     wishlistReducer,
     productDetailsReducer,
     categoriesSlice,
+    orderInfoSlice
   },
 });
 

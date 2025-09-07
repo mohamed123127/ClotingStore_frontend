@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Discount from "./Discount";
-import OrderSummary from "./OrderSummary";
 import { useAppSelector } from "@/redux/store";
 import SingleItem from "./SingleItem";
 import Breadcrumb from "../Common/Breadcrumb";
@@ -11,7 +10,6 @@ import ShippingForm from "./ShippingForm";
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cartReducer.items);
-
   return (
     <>
       {/* <!-- ===== Breadcrumb Section Start ===== --> */}
