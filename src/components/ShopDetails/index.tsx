@@ -88,7 +88,7 @@ const ShopDetails = () => {
 
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
-    openPreviewModal();
+    openPreviewModal(0,[]);
   };
 
   console.log(product);

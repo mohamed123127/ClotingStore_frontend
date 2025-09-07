@@ -14,7 +14,7 @@ const BestSeller = () => {
   const [shopData, setShopData] = useState<Product[]>([]);
 
   useEffect(() => {
-    getProducts()
+    getProducts(1,5)
       .then((data) => {
         setShopData(data);
       })

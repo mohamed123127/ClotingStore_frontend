@@ -65,7 +65,7 @@ const ShippingDetails = () => {
             const data = await result.json();
              //console.log(data);
             setWilayas(data.wilayas);
-            //setSelectedWilaya("1");
+            //setselectedWilayaId("1");
         }
 
         getWilayas();
@@ -109,7 +109,7 @@ const ShippingDetails = () => {
             const data = await result.json();
             // console.log(data);
             setAgences(data.agences);
-            //setSelectedCommune("1");
+            //setselectedCommuneId("1");
         }
 
         if (shippingDetaillies.shippingMethod == "stopDesk" && shippingDetaillies.commune.name != ""){
@@ -127,7 +127,7 @@ const ShippingDetails = () => {
         setAgenceAddress(agence?.address);
         setGps(agence?.gps);
         //console.log(agence);
-        //setAddress(selectedAgence.address);
+        //setAddress(selectedAgenceId.address);
       
     },[shippingDetaillies.agence.id])
 
@@ -402,7 +402,7 @@ const ShippingForm = () => {
                 <ShippingDetails/>
             </div>
         </div>
-        <OrderSummary ShippingFees={500}/>
+        <OrderSummary ShippingFees={shippingPrice}/>
     </div>
   )
 }

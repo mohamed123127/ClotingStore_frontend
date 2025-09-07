@@ -33,6 +33,7 @@ const shopData: Product[] = [
     discountedPrice: 29.0,
     id: 1,
     previewImage: "/images/products/product-1-sm-1.png",
+    sex:"H"
   },
   {
     name: "iPhone 14 Plus , 6/128GB",
@@ -41,6 +42,7 @@ const shopData: Product[] = [
     discountedPrice: 99.0,
     id: 2,
     previewImage: "/images/products/product-2-sm-1.png",
+    sex:"F"
   }
 ];
 export default shopData;
