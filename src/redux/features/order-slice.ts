@@ -9,18 +9,9 @@ const initialState:orderInfo = {
     },
     shippingDetaillies:{
         shippingMethod:"stopDesk",
-        wilaya: {
-            id:null,
-            name:""
-        },
-        commune: {
-            id:null,
-            name:""
-        },
-        agence: {
-            id: null,
-            name: ""
-        },
+        wilayaName : "",
+        communeName : "",
+        agenceId : "",
         address:""
     }
 };
@@ -36,13 +27,14 @@ const orderInfoSlice = createSlice({
         },
         setShippingDetaillies: (state,action:PayloadAction<shippingDetaillies>) => {
             state.shippingDetaillies.shippingMethod = action.payload.shippingMethod;
-            state.shippingDetaillies.wilaya = action.payload.wilaya;
-            state.shippingDetaillies.commune = action.payload.commune;
-            state.shippingDetaillies.agence = action.payload.agence;
+            state.shippingDetaillies.wilayaName = action.payload.wilayaName;
+            state.shippingDetaillies.communeName = action.payload.communeName;
+            state.shippingDetaillies.agenceId = action.payload.agenceId;
             state.shippingDetaillies.address = action.payload.address;
         },
         clearOrderInfo: (state) => {
-            state = initialState;
+            state.customerInfo = initialState.customerInfo;
+            state.shippingDetaillies = initialState.shippingDetaillies;
         }
     }
 });

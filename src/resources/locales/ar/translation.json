@@ -101,8 +101,8 @@
   "YourCartIsEmpty": "سلتك فارغة",
   "ContinueShopping": "مواصلة التسوق",
 
-  "nom": "الاسم",
-    "prenom": "اللقب",
+  "nom": "اللقب",
+    "prenom": "الاسم",
     "numeroTelephone": "رقم الهاتف",
     "willaya": "الولاية",
     "commune": "البلدية",

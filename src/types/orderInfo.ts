@@ -11,18 +11,9 @@ export type customerInfo = {
 
 export type shippingDetaillies = {
         shippingMethod: string;
-        wilaya: {
-            id: number;
-            name: string;
-        };
-        commune: {
-            id: number;
-            name: string;
-        };
-        agence: {
-            id: number;
-            name: string;
-        };
+        wilayaName: string;
+        communeName: string;
+        agenceId: string
         address: string; 
     }
 

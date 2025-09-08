@@ -1,11 +1,9 @@
 "use client";
 import React from "react";
-import Discount from "./Discount";
 import { useAppSelector } from "@/redux/store";
 import SingleItem from "./SingleItem";
 import Breadcrumb from "../Common/Breadcrumb";
 import Link from "next/link";
-import Shipping from "../Checkout/Shipping";
 import ShippingForm from "./ShippingForm";
 
 const Cart = () => {

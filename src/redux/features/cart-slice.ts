@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import Cookies from 'js-cookie';
 
 type InitialState = {
   items: CartItem[];
@@ -17,7 +18,7 @@ type CartItem = {
 };
 
 const initialState: InitialState = {
-  items: [],
+  items: Cookies.get("parcelItems") ? JSON.parse(Cookies.get('parcelItems')) : [] ,
 };
 
 export const cart = createSlice({
@@ -42,11 +43,14 @@ export const cart = createSlice({
           availableQuantity,
           image,
         });
+        Cookies.set('parcelItems', JSON.stringify(state.items));
+        // console.info(state.items);
       }
     },
     removeItemFromCart: (state, action: PayloadAction<number>) => {
       const itemId = action.payload;
       state.items = state.items.filter((item) => item.id !== itemId);
+      Cookies.set('parcelItems', JSON.stringify(state.items));
     },
     updateCartItemQuantity: (
       state,
@@ -58,10 +62,12 @@ export const cart = createSlice({
       if (existingItem) {
         existingItem.quantity = quantity;
       }
+      Cookies.set('parcelItems', JSON.stringify(state.items));
     },
 
     removeAllItemsFromCart: (state) => {
       state.items = [];
+      Cookies.remove('parcelItems');
     },
   },
 });

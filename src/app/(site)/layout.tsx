@@ -21,6 +21,7 @@ import PreLoader from "@/components/Common/PreLoader";
 import { dir } from 'i18next';
 import i18n from '../../config/i18n';
 
+
 export default function RootLayout({
   children,
 }: {
@@ -34,7 +35,6 @@ export default function RootLayout({
     i18n.changeLanguage("ar");
     setTimeout(() => setLoading(false), 1000);
   }, []);
-//  console.log(i18n.language);
   return (
     <html lang="ar" suppressHydrationWarning={true}>
       <body>
