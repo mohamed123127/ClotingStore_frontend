@@ -116,11 +116,6 @@ const ShopWithSidebar = () => {
       .finally(() => setLoading(false));
   },[paginationInfo.currentPage])
 
-  // useEffect(() => {
-  //   console.log(shopData);
-  //   console.log(genders);
-  // },[genders]);
-
   if (loading) return <p>Loading...</p>;
 
   return (

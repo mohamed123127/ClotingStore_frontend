@@ -20,6 +20,7 @@ import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 import { dir } from 'i18next';
 import i18n from '../../config/i18n';
+import { usePathname } from "next/navigation";
 
 
 export default function RootLayout({
@@ -28,6 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     document.documentElement.lang = "ar";
@@ -35,6 +37,14 @@ export default function RootLayout({
     i18n.changeLanguage("ar");
     setTimeout(() => setLoading(false), 1000);
   }, []);
+
+  if (pathname.startsWith("/admin")) {
+    return <html lang="en" dir="ltr">
+      <body>
+        {children}
+      </body>
+    </html>; // بدون Layout
+  }
   return (
     <html lang="ar" suppressHydrationWarning={true}>
       <body>
