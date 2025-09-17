@@ -50,7 +50,7 @@ const GenderItem = ({ gender , count }) => {
   );
 };
 
-const GenderDropdown = () => {
+const GenderDropdown = ({setFillter}) => {
    const [toggleDropdown, setToggleDropdown] = useState(true);
     const [genders, setGenders] = useState([]);
   const { t } = useTranslation();
@@ -63,9 +63,7 @@ useEffect(()=>{
       }
 
       const data = await result.json();
-      // console.log(data);
       setGenders(data.genders);
-                console.log(data.genders);
 
     }
 

@@ -2,12 +2,28 @@ import { Product } from "@/types/product";
 export let totalProducts = 0;
 export let totalPages = 0;
 
-export async function getProducts(pageNumber,perPage): Promise<Product[]> {
-  const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products?page=" + pageNumber + "&per_page=" + perPage);
+function generateFillter(filters: productFillter): string {
+  const keys = Object.keys(filters);
+  if (keys.length > 0) {
+    let filter = "";
+    keys.forEach(key => {
+      filter += `&${key}=${filters[key]}`;
+    });
+
+    return filter;
+  }
+
+  return "";
+}
+
+export async function getProducts(pageNumber,perPage,fillters): Promise<Product[]> {
+  const fillter= generateFillter(fillters);
+  console.log("Generated fillter:", fillter);
+  const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products?page=" + pageNumber + "&per_page=" + perPage+fillter);
   // console.log(response);
   if (!response.ok) throw new Error("Failed to fetch products");
   const data = await response.json();
-  //console.log(data);
+
   const products = data.products;
   totalProducts = data.total_products;
   totalPages = data.last_page;

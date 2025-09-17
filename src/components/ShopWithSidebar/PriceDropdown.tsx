@@ -3,7 +3,7 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { useTranslation } from 'next-i18next';
 
-const PriceDropdown = () => {
+const PriceDropdown = ({setFillter}) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
     const { t } = useTranslation();
   const [priceRange, setPriceRange] = useState({min:0, max:100});
