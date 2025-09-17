@@ -2,27 +2,31 @@
 
 import {  useState } from "react";
 import { useTranslation } from "next-i18next";
+import { set } from "zod";
 
-const CategoryItem = ({ category }) => {
-  const [selected, setSelected] = useState(false);
+const CategoryItem = ({ category , setFillter}) => {
+  const [selectedCategory, setSelectedCategory] = useState(false);
     const { t } = useTranslation();
 
   // console.log(category);
   return (
     <button
       className={`${
-        selected && "text-blue"
+        selectedCategory && "text-blue"
       } group flex items-center justify-between ease-out duration-200 hover:text-blue `}
-      onClick={() => setSelected(!selected)}
+      onClick={() => {
+        setSelectedCategory(!selectedCategory)
+        setFillter(prev =>({...prev, category_id: category.id}));
+      }}
     >
       <div className="flex items-center gap-2">
         <div
           className={`cursor-pointer flex items-center justify-center rounded w-4 h-4 border ${
-            selected ? "border-blue bg-blue" : "bg-white border-gray-3"
+            selectedCategory ? "border-blue bg-blue" : "bg-white border-gray-3"
           }`}
         >
           <svg
-            className={selected ? "block" : "hidden"}
+            className={selectedCategory ? "block" : "hidden"}
             width="10"
             height="10"
             viewBox="0 0 10 10"
@@ -44,7 +48,7 @@ const CategoryItem = ({ category }) => {
 
       <span
         className={`${
-          selected ? "text-white bg-blue" : "bg-gray-2"
+          selectedCategory ? "text-white bg-blue" : "bg-gray-2"
         } inline-flex rounded-[30px] text-custom-xs px-2 ease-out duration-200 group-hover:text-white group-hover:bg-blue`}
       >
         {category.productsCount}
@@ -53,7 +57,7 @@ const CategoryItem = ({ category }) => {
   );
 };
 
-const CategoryDropdown = ({ categories }) => {
+const CategoryDropdown = ({ categories ,setFillter}) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
   const { t } = useTranslation();
 
@@ -101,7 +105,7 @@ const CategoryDropdown = ({ categories }) => {
         }`}
       >
         {categories.map((category, key) => (
-          <CategoryItem key={key} category={category} />
+          <CategoryItem key={key} category={category} setFillter={setFillter}/>
         ))}
       </div>
     </div>

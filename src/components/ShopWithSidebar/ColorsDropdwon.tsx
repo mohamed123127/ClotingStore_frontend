@@ -2,13 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 
-const ColorsDropdwon = () => {
+const ColorsDropdwon = ({setFillter}) => {
    const [toggleDropdown, setToggleDropdown] = useState(true);
-  const [activeColor, setActiveColor] = useState("blue");
+  const [selectedColor, setSelectedColor] = useState("");
   const [colors,setColors] = useState<string[]>([]);
     const { t } = useTranslation();
-
-  //const colorss = ["red", "blue", "orange", "pink", "purple"];
 
 useEffect(()=>{
     async function fetchColors(){
@@ -42,9 +40,9 @@ data.colors.forEach(color => {
     //setSizes(["XS","S","M","L","XL","XXL"])
   },[])
 
-    useEffect(()=>{
-      setActiveColor(colors[0]);
-    },[])
+    // useEffect(()=>{
+    //   setActiveColor(colors[0]);
+    // },[])
 
     function isValidCssColor(color: string): boolean {
   const s = new Option().style;
@@ -54,25 +52,6 @@ data.colors.forEach(color => {
 
 function renderCustomComponent(color: string) {
   switch (color.toLowerCase()) {
-    // case "pink-white":
-    //   return (
-    // <div
-    //   className="w-6 h-6 rounded-full border-[#ccc]"
-    //   style={{
-    //     backgroundImage:
-    //       "linear-gradient(to right, pink 50%, white 50%)",
-    //   }}
-    // />      );
-    // case "white-purple":
-    //   return (
-    // <div
-    //   className="w-6 h-6 rounded-full border-2 border-[#ccc]"
-    //   style={{
-    //     backgroundImage:
-    //       "linear-gradient(to right, white 50%, purple 50%)",
-    //   }
-    // }
-    // />      );
     case "biker":
       return (
     <div
@@ -137,13 +116,20 @@ function renderCustomComponent(color: string) {
           type="radio"
           name="color"
           id={color}
-          className="sr-only"
-          onChange={() => setActiveColor(color)}
-        />
+          className={`sr-only `}
+          onChange={() => {
+            setSelectedColor(color);
+            setFillter(prev =>({...prev, color: color}));
+            // console.log("Selected color:", color);
+          }}
+          checked={selectedColor === color}
+/>
         <div className="flex items-center justify-center w-8 h-8 rounded-full">
         {isValidCssColor(color) ? (
           <span
-            className="block w-6 h-6 rounded-full"
+            className={`block w-6 h-6 rounded-full ${
+              selectedColor === color ? "ring-2 ring-offset-1 ring-blue-dark" : ""
+            }`}
             style={{
               backgroundColor: color,
               border:

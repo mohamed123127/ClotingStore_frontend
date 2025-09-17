@@ -2,7 +2,7 @@
 import React, { use, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 
-const SizeDropdown = () => {
+const SizeDropdown = ({setFillter}) => {
     const { t } = useTranslation();
   const [toggleDropdown, setToggleDropdown] = useState(true);
   const [sizes,setSizes] = useState<string[]>([]);

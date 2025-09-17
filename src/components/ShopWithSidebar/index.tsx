@@ -26,7 +26,7 @@ const ShopWithSidebar = () => {
   const [paginationInfo,setPaginationInfo] = useState({currentPage:1,perPage:12,totalPages:10});
   const categories = useAppSelector((state) => state.categoriesSlice.list) as Category[];
   const { t } = useTranslation();
-
+  const [fillters,setFillters] = useState<productFillter>({});
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
       setStickyMenu(true);
@@ -34,45 +34,6 @@ const ShopWithSidebar = () => {
       setStickyMenu(false);
     }
   };
-
-  // const options = [
-  //   { label: "Latest Products", value: "0" },
-  //   { label: "Best Selling", value: "1" },
-  //   { label: "Old Products", value: "2" },
-  // ];
-
-  // const categories = [
-  //   {
-  //     name: "Desktop",
-  //     products: 10,
-  //     isRefined: true,
-  //   },
-  //   {
-  //     name: "Laptop",
-  //     products: 12,
-  //     isRefined: false,
-  //   },
-  //   {
-  //     name: "Monitor",
-  //     products: 30,
-  //     isRefined: false,
-  //   },
-  //   {
-  //     name: "UPS",
-  //     products: 23,
-  //     isRefined: false,
-  //   },
-  //   {
-  //     name: "Phone",
-  //     products: 10,
-  //     isRefined: false,
-  //   },
-  //   {
-  //     name: "Watch",
-  //     products: 13,
-  //     isRefined: false,
-  //   },
-  // ];
 
   const genders = shopData.reduce((acc, item) => {
   acc[item.sex] = (acc[item.sex] || 0) + 1;
@@ -99,7 +60,7 @@ const ShopWithSidebar = () => {
   });
 
   useEffect(() => {
-    getProducts(paginationInfo.currentPage,paginationInfo.perPage)
+    getProducts(paginationInfo.currentPage,paginationInfo.perPage,fillters)
       .then((data) => {
         setShopData(data);
         paginationInfo.totalPages = totalPages;
@@ -109,13 +70,13 @@ const ShopWithSidebar = () => {
   }, []);
 
   useEffect(() => {
-    getProducts(paginationInfo.currentPage,paginationInfo.perPage)
+    getProducts(paginationInfo.currentPage,paginationInfo.perPage,fillters)
     .then((data) => {
         setShopData(data);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-  },[paginationInfo.currentPage])
+  },[paginationInfo.currentPage,fillters])
 
   if (loading) return <p>Loading...</p>;
 
@@ -174,24 +135,24 @@ const ShopWithSidebar = () => {
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
                     <div className="flex items-center justify-between">
                       <p>{t('Filters')}:</p>
-                      <button className="text-blue">{t('CleanAll')}</button>
+                      <button className="text-blue" onClick={()=>setFillters({})}>{t('CleanAll')}</button>
                     </div>
                   </div>
 
                   {/* <!-- category box --> */}
-                  <CategoryDropdown categories={categories} />
+                  <CategoryDropdown categories={categories} setFillter={setFillters}/>
 
                   {/* <!-- gender box --> */}
-                  <GenderDropdown />
+                  <GenderDropdown setFillter={setFillters}/>
 
                   {/* // <!-- size box --> */}
-                  <SizeDropdown />
+                  <SizeDropdown setFillter={setFillters}/>
 
                   {/* // <!-- color box --> */}
-                  <ColorsDropdwon />
+                  <ColorsDropdwon setFillter={setFillters}/>
 
                   {/* // <!-- price range box --> */}
-                  <PriceDropdown />
+                  <PriceDropdown setFillter={setFillters}/>
                 </div>
               </form>
             </div>
