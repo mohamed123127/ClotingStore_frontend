@@ -10,10 +10,9 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import LocationOnIcon from '@mui/icons-material/LocationOn'; 
-import settings from "../../../settings.json";
 
 const ShippingDetails = ({setShippingFees}) => {
-    const { t } = useTranslation();
+     const { t } = useTranslation();
     const [wilayas, setWilayas] = React.useState([]);
     //const [selectedWilaya,setSelectedWilaya] = useState("");
     const [communes, setCommunes] = React.useState([]);
@@ -33,7 +32,7 @@ const ShippingDetails = ({setShippingFees}) => {
     //fetch wilayas
     useEffect(()=>{
         async function getWilayas() {
-            const result = await fetch(settings.Api + "yalidine/wilayas");
+            const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "yalidine/wilayas");
             if(!result.ok){
                 return console.error("Failed to fetch wilayas");
             }
@@ -57,7 +56,7 @@ const ShippingDetails = ({setShippingFees}) => {
             if(shippingDetaillies.shippingMethod == "stopDesk"){
                 url = `yalidine/communes/${selectedWilaya.id}/hasAgence`
             }
-            const result = await fetch(settings.Api + url);
+            const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + url);
             if(!result.ok){
                 return console.error("Failed to fetch communes");
             }
@@ -87,7 +86,7 @@ const ShippingDetails = ({setShippingFees}) => {
             const selectedCommune = communes.find((c)=>c.name == shippingDetaillies.communeName)
             let url = `yalidine/agences/${selectedCommune.id}`
             
-            const result = await fetch(settings.Api + url);
+            const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + url);
             if(!result.ok){
                 return console.error("Failed to fetch agences");
             }

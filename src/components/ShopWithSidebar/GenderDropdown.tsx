@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import settings from "../../../settings.json"
 
 const GenderItem = ({ gender , count }) => {
   const [selected, setSelected] = useState(false);
@@ -52,13 +51,13 @@ const GenderItem = ({ gender , count }) => {
 };
 
 const GenderDropdown = () => {
-  const [toggleDropdown, setToggleDropdown] = useState(true);
+   const [toggleDropdown, setToggleDropdown] = useState(true);
     const [genders, setGenders] = useState([]);
   const { t } = useTranslation();
 
 useEffect(()=>{
     async function fetchGenders(){
-      const result = await fetch(settings.Api + "products/genders");
+      const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products/genders");
       if(!result.ok){
         return console.error("Failed to fetch genders");
       }
@@ -66,6 +65,8 @@ useEffect(()=>{
       const data = await result.json();
       // console.log(data);
       setGenders(data.genders);
+                console.log(data.genders);
+
     }
 
     fetchGenders();

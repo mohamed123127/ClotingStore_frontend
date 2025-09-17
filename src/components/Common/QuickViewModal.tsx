@@ -9,7 +9,6 @@ import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { resetQuickView } from "@/redux/features/quickView-slice";
 import { productDetails, updateproductDetails } from "@/redux/features/product-details";
-import settings from "../../../settings.json";
 import ExtractWithoutRepetition from "@/helpers/Extractor";
 import { getProducts } from "../Shop/shopData";
 import { get } from "node:http";
@@ -17,7 +16,7 @@ import { prototype } from "node:events";
 import PreLoader from "@/components/Common/PreLoader";
 
 const QuickViewModal = () => {
-  const { isModalOpen, closeModal } = useModalContext();
+   const { isModalOpen, closeModal } = useModalContext();
   const {openPreviewModal } = usePreviewSlider();
   const [loading, setLoading] = useState({
     colors: true,
@@ -85,7 +84,7 @@ const QuickViewModal = () => {
     setProductWithDetailles({...product});
     async function getProductVariants() {
       try {
-        const response = await fetch(`${settings.Api}products/${product.id}/variants`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_Default_Api_Url}products/${product.id}/variants`);
   
         if (!response.ok) {
           console.error("Failed to fetch variants:", response.status);
@@ -115,7 +114,7 @@ const QuickViewModal = () => {
 
     async function getProductSizes() {
       try {
-        const response = await fetch(`${settings.Api}products/${product.id}/sizes`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_Default_Api_Url}products/${product.id}/sizes`);
   
         if (!response.ok) {
           console.error("Failed to fetch sizes:", response.status);
@@ -140,7 +139,7 @@ const QuickViewModal = () => {
     }
 
     async function getProductImages() {
-      const response = await fetch(settings.Api + "products/" + product.id + "/images");
+      const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products/" + product.id + "/images");
       if(!response.ok){
         console.error("Failed to fetch : " + response.url + "\nstatus: " + response.status);
         return; 

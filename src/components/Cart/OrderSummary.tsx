@@ -5,15 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { customerInfo, shippingDetaillies } from '@/types/orderInfo';
-import settings from "../../../settings.json";
 import Coockies from "js-cookie";
 import { removeAllItemsFromCart, selectTotalPrice } from '@/redux/features/cart-slice';
 import { clearOrderInfo } from '@/redux/features/order-slice';
 import { z } from 'zod';
 
 const OrderSummary = ({ShippingFees,setErrors}) => {
-  
-  const { t } = useTranslation();
+   const { t } = useTranslation();
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
@@ -82,7 +80,7 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
       return false;
     }
     const jsonBodyData = JSON.stringify(bodyData);
-    const response = await fetch(settings.Api + "sales", {
+    const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "sales", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -7,6 +7,7 @@ export type customerInfo = {
         firstName: string;
         lastName: string;
         phoneNumber: string;
+        website:string;
     }
 
 export type shippingDetaillies = {

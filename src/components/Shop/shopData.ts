@@ -1,11 +1,9 @@
 import { Product } from "@/types/product";
-import settings from "../../../settings.json";
-
 export let totalProducts = 0;
 export let totalPages = 0;
 
 export async function getProducts(pageNumber,perPage): Promise<Product[]> {
-  const response = await fetch(settings.Api + "products?page=" + pageNumber + "&per_page=" + perPage);
+  const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products?page=" + pageNumber + "&per_page=" + perPage);
   // console.log(response);
   if (!response.ok) throw new Error("Failed to fetch products");
   const data = await response.json();

@@ -2,6 +2,7 @@
 import Home from "@/components/Home";
 import { Metadata } from "next";
 import { useEffect } from "react";
+import ShopWithSidebarPage from "./(pages)/shop-with-sidebar/page";
 
 
 export const metadata: Metadata = {
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Home />
+      {/* <Home /> */}
+      <ShopWithSidebarPage />
     </>
   );
 }

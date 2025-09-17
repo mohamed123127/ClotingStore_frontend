@@ -1,6 +1,5 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
-import settings from "@/../../settings.json";
 import { useTranslation } from "next-i18next";
 
 const SizeDropdown = () => {
@@ -9,7 +8,7 @@ const SizeDropdown = () => {
   const [sizes,setSizes] = useState<string[]>([]);
   useEffect(()=>{
     async function fetchSizes(){
-      const result = await fetch(settings.Api + "sizes");
+      const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "sizes");
       if(!result.ok){
         return console.error("Failed to fetch sizes");
       }

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ProductItem from "@/components/Common/ProductItem";
@@ -8,12 +8,30 @@ import shopData, { getProducts } from "@/components/Shop/shopData";
 import { useTranslation } from "next-i18next";
 import SingleItem from "../BestSeller/SingleItem";
 import { Product } from "@/types/product";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 
 const NewArrival = () => {
   const { t } = useTranslation();
   const [shopData, setShopData] = useState<Product[]>([]);
-
+  const sliderRef = useRef(null);
+  
+    const handlePrev = useCallback(() => {
+      if (!sliderRef.current) return;
+      sliderRef.current.swiper.slidePrev();
+    }, []);
+  
+    const handleNext = useCallback(() => {
+      if (!sliderRef.current) return;
+      sliderRef.current.swiper.slideNext();
+    }, []);
+  
+    useEffect(() => {
+      if (sliderRef.current) {
+        sliderRef.current.swiper.init();
+      }
+    }, []);
+  
   useEffect(() => {
     getProducts(1,5)
       .then((data) => {
@@ -28,7 +46,7 @@ const NewArrival = () => {
         {/* <!-- section title --> */}
         <div className="mb-7 flex items-center justify-between">
           <div>
-            <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
+            {/* <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
               <svg
                 width="20"
                 height="20"
@@ -49,10 +67,11 @@ const NewArrival = () => {
                 />
               </svg>
               {t('thisWeek')}
-              </span>
+              </span> */}
             <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
             {t('newArrivals')}
             </h2>
+             
           </div>
 
           <Link
@@ -63,12 +82,40 @@ const NewArrival = () => {
             </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9"> */}
           {/* <!-- New Arrivals item --> */}
-          {shopData.map((item, key) => (
+          {/* {shopData.map((item, key) => (
             <SingleItem item={item} key={key} />
           ))}
-        </div>
+        </div> */}
+
+        <Swiper
+            ref={sliderRef}
+            slidesPerView={6}
+            centerInsufficientSlides={true}
+            spaceBetween={16}
+            breakpoints={{
+              // when window width is >= 640px
+              0: {
+                slidesPerView: 2,
+              },
+              1000: {
+                slidesPerView: 4,
+                // spaceBetween: 4,
+              },
+              // when window width is >= 768px
+              1200: {
+                slidesPerView: 6,
+              },
+            }}
+          >
+            {shopData.map((item, key) => (
+              <SwiperSlide key={key}>
+                <SingleItem item={{...item}} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        
       </div>
     </section>
   );

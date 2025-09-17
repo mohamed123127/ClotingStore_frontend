@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import Settings from '../../../settings.json';
 import { useTranslation } from 'next-i18next';
 
 const PriceDropdown = () => {
@@ -15,7 +14,7 @@ const PriceDropdown = () => {
 
   useEffect(()=>{
     async function fetchMinAndMaxPrice() {
-      const response = await fetch(Settings.Api + 'products/MaxAndMinPrice');
+      const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + 'products/MaxAndMinPrice');
       // console.log(response);
       if(!response.ok){
         throw new Error('Failed to fetch highest price');

@@ -41,7 +41,10 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-white shadow-1 min-h-[270px] mb-0">
-        <Image src={item.previewImage} alt="" width={250} height={250} />
+        <Image src={item.previewImage} alt="" className="cursor-pointer" width={250} height={250} onClick={() => {
+              openModal();
+              handleQuickViewUpdate();
+            }}/>
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -51,7 +54,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
             }}
             id="newOne"
             aria-label="button for quick view"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
+            className="hidden flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
           >
             <svg
               className="fill-current"
@@ -145,8 +148,11 @@ const SingleGridItem = ({ item }: { item: Product }) => {
         <p className="text-custom-sm">({item.reviews})</p>
       </div> */}
 
-      <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-        <Link href="/shop-details"> {item.name} </Link>
+      <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5 cursor-pointer" onClick={() => {
+              openModal();
+              handleQuickViewUpdate();
+            }}>
+         {item.name}
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
