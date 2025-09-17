@@ -1,10 +1,9 @@
 import { createSlice ,createAsyncThunk  } from "@reduxjs/toolkit";
 import { Category } from "@/types/category";
 import { initScriptLoader } from "next/script";
-import settings from "../../../settings.json";
 
 export const fetchCategories = createAsyncThunk('categories/fetchCategories', async ()=> {
-    const response = await fetch(settings.Api + "categories");
+    const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "categories");
     if (!response.ok) throw new Error("Failed to fetch categories");
     const data = await response.json();
     return data.Categories;

@@ -16,6 +16,7 @@ const CustomerInformation = () => {
             <TextField id="outlined" value={customerInformation.lastName} onChange={(e) => dispatch(setCustomerInfo({...customerInformation,lastName:e.target.value}))} label={t('nom')}/>
             <TextField id="outlined" value={customerInformation.firstName} onChange={(e) => dispatch(setCustomerInfo({...customerInformation,firstName:e.target.value}))} label={t('prenom')}/>
             <TextField id="outlined" value={customerInformation.phoneNumber} onChange={(e) => dispatch(setCustomerInfo({...customerInformation,phoneNumber:e.target.value}))} label={t('numeroTelephone')}/>
+            <input type="text" name="website" className="hidden" autoComplete="off" value={customerInformation.website} onChange={(e) => dispatch(setCustomerInfo({...customerInformation,website:e.target.value}))}/>
         </div>
     );
 }

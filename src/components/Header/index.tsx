@@ -9,7 +9,6 @@ import { fetchCategories } from "@/redux/features/categories-slice";
 import { useSelector  } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
-import Image from "next/image";
 import Languages from "./Languages";
 import { useTranslation } from 'next-i18next';
 import { Category } from "@/types/category";
@@ -61,7 +60,7 @@ const Header = () => {
         stickyMenu && "shadow"
       }`}
     >
-      <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0">
+      <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 border-b border-gray-3">
         {/* <!-- header top start --> */}
         <div
           className={`flex flex-col lg:flex-row gap-5 items-end lg:items-center xl:justify-between ease-out duration-200 ${
@@ -74,7 +73,7 @@ const Header = () => {
               <h1 className="text-dark font-bold text-2xl">Jardin d&apos;enfant</h1>
             </Link>
 
-            <div className="max-w-[475px] w-full">
+            <div className="max-w-[475px] w-full hidden">
               <form>
                 <div className="flex items-center">
                   <CustomSelect options={options} />
@@ -159,9 +158,9 @@ const Header = () => {
             {/* <!-- divider --> */}
             <span className="hidden xl:block w-px h-7.5 bg-gray-4"></span>
 
-            <div className="flex w-full lg:w-auto justify-between items-center gap-5">
+            <div className=" flex flex-row-reverse w-full lg:w-auto justify-between items-center gap-5">
               <div className="flex items-center gap-5">
-                <Link href="/signin" className="flex items-center gap-2.5">
+                <Link href="/signin" className="flex items-center gap-2.5 hidden">
                   <svg
                     width="24"
                     height="24"

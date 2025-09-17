@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import settings from "../../../../../../settings.json"
 import { SalesTable } from '@/components/Dashboard/SalesTable';
+
+const process.env.NEXT_PUBLIC_Default_Api_Url  = process.env.NEXT_PUBLIC_API_URL;
 
 // const sales: Sale[] = [
 //   {
@@ -40,7 +41,7 @@ export default function Dashboard() {
 
     React.useEffect(()=>{
         async function getAllSales() {
-        const result = await fetch(settings.Api + "sales");
+        const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "sales");
         if(!result.ok){
             return console.error("Failed to fetch sa;es");
         }

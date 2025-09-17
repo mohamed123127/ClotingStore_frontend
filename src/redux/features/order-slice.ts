@@ -5,7 +5,8 @@ const initialState:orderInfo = {
     customerInfo:{
         firstName:"",
         lastName:"",
-        phoneNumber:""
+        phoneNumber:"",
+        website: ""
     },
     shippingDetaillies:{
         shippingMethod:"stopDesk",
@@ -24,6 +25,7 @@ const orderInfoSlice = createSlice({
             state.customerInfo.firstName = action.payload.firstName;
             state.customerInfo.lastName = action.payload.lastName;
             state.customerInfo.phoneNumber = action.payload.phoneNumber;
+            state.customerInfo.website = action.payload.website;
         },
         setShippingDetaillies: (state,action:PayloadAction<shippingDetaillies>) => {
             state.shippingDetaillies.shippingMethod = action.payload.shippingMethod;

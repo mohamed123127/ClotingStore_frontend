@@ -59,7 +59,7 @@ const SingleItem = ({ item }: { item: Product }) => {
       </span>
         </div>
 
-        <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-col gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0">
+        {/* <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-col gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0">
           <button
             onClick={() => {
               handleQuickViewUpdate();
@@ -151,7 +151,7 @@ const SingleItem = ({ item }: { item: Product }) => {
               />
             </svg>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
