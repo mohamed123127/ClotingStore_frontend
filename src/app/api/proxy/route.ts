@@ -1,7 +1,11 @@
 export async function GET(request) {
   const url = new URL(request.url);
-  const query = url.search.replace("?path=", ""); 
-  const targetUrl = process.env.API_URL + query;
+  const path = url.searchParams.get("path"); // مثلا: /products
+  const params = url.searchParams.toString()
+    .replace(`path=${encodeURIComponent(path)}`, ""); // بقية الـ query params
+
+  // بناء الـ URL النهائي
+  const targetUrl = `${process.env.API_URL}${path}${params ? `?${params}` : ""}`;
 
   try {
     const response = await fetch(targetUrl, {
@@ -13,22 +17,29 @@ export async function GET(request) {
       cache: "no-store",
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get("content-type");
 
-    // تسجيل الـ status والبيانات في حالة النجاح
-    console.log(`[API SUCCESS] URL: ${targetUrl}, Status: ${response.status}`);
-
-    return Response.json(data, { status: response.status });
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      console.log(`[API SUCCESS] URL: ${targetUrl}, Status: ${response.status}`);
+      return Response.json(data, { status: response.status });
+    } else {
+      const text = await response.text();
+      console.error(`[API ERROR] Expected JSON but got HTML`, text);
+      return Response.json(
+        { message: "Expected JSON but got HTML", status: response.status },
+        { status: response.status }
+      );
+    }
   } catch (error) {
-    // تسجيل الخطأ والـ status الافتراضي (يمكن تغييره حسب نوع الخطأ)
-    console.error(`[API ERROR] URL: ${targetUrl}, Status: 500, Error:`, error);
-
+    console.error(`[Proxy Error] URL: ${targetUrl}`, error);
     return Response.json(
       { message: "Something went wrong", error: error.message || error },
       { status: 500 }
     );
   }
 }
+
 
 
 export async function POST(request) {
