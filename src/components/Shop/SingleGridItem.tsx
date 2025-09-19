@@ -12,23 +12,12 @@ import Image from "next/image";
 
 const SingleGridItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
-
   const dispatch = useDispatch<AppDispatch>();
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
     dispatch(updateQuickView({ ...item }));
   };
-
-  // // add to cart
-  // const handleAddToCart = () => {
-  //   dispatch(
-  //     addItemToCart({
-  //       ...item,
-  //       quantity: 1,
-  //     })
-  //   );
-  // };
 
   const handleItemToWishList = () => {
     dispatch(
@@ -79,13 +68,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
             </svg>
           </button>
 
-          {/* <button
-            onClick={() => handleAddToCart()}
-            className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
-          >
-            Add to cart
-          </button> */}
-
+         
           <button
             onClick={() => handleItemToWishList()}
             aria-label="button for favorite select"
@@ -110,43 +93,6 @@ const SingleGridItem = ({ item }: { item: Product }) => {
           </button>
         </div>
       </div>
-
-      {/* <div className="flex items-center gap-2.5 mb-2">
-        <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-        </div>
-
-        <p className="text-custom-sm">({item.reviews})</p>
-      </div> */}
 
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5 cursor-pointer" onClick={() => {
               openModal();

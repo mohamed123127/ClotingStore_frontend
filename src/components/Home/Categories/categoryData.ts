@@ -1,7 +1,8 @@
-const process.env.NEXT_PUBLIC_Default_Api_Url  = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getCategories() {
-  const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "categories");
+  const ApiUrl = process.env.NEXT_PUBLIC_Default_Api_Url;
+  
+  const response = await fetch(ApiUrl + "categories");
   console.log(response);
   if (!response.ok) throw new Error("Failed to fetch categories");
   const data = await response.json();

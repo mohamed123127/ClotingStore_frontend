@@ -3,8 +3,6 @@
 import * as React from 'react'
 import { SalesTable } from '@/components/Dashboard/SalesTable';
 
-const process.env.NEXT_PUBLIC_Default_Api_Url  = process.env.NEXT_PUBLIC_API_URL;
-
 // const sales: Sale[] = [
 //   {
 //     id: "yal-W95NXT",
@@ -38,10 +36,11 @@ const process.env.NEXT_PUBLIC_Default_Api_Url  = process.env.NEXT_PUBLIC_API_URL
 
 export default function Dashboard() {
     const [sales,setSales] = React.useState([]);
+    const ApiUrl = process.env.NEXT_PUBLIC_Default_Api_Url;
 
     React.useEffect(()=>{
         async function getAllSales() {
-        const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "sales");
+        const result = await fetch(ApiUrl + "sales");
         if(!result.ok){
             return console.error("Failed to fetch sa;es");
         }
