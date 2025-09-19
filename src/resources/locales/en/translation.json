@@ -6,6 +6,7 @@
     "Girls": "Girl",
     "TwoItems": "Two-piece outfit",
     "ThreeItems": "Three-piece outfit",
+    "FourthItems": "Set of 4 pieces",
 
     "JardinEnfant": "Jardin d’Enfants",
     "ShoppingForPlaceHolder": "What are you shopping for?",
@@ -110,7 +111,12 @@
     "agence": "Agency",
      "homeDelivery": "Home Delivery",
   "pickupPointDelivery": "Company Pickup Delivery",
-    "deliveryMethod": "Delivery Method",
-      "orderAndDeliveryDetails": "Order and Delivery Details"
+  "deliveryMethod": "Delivery Method",
+  "orderAndDeliveryDetails": "Order and Delivery Details",
+      
+  "ShirtLength": "Shirt length",
+  "SleeveLength": "Sleeve length",
+  "PantsLength": "Pants length",
+  "ItemSizes": "Item sizes"
 
 }

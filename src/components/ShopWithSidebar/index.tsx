@@ -12,7 +12,6 @@ import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
 import { Product } from "@/types/product";
 import { useAppSelector } from "@/redux/store";
-import { Category } from "@/types/category";
 import { useTranslation } from "react-i18next";
 
 
@@ -20,13 +19,12 @@ const ShopWithSidebar = () => {
   const [productStyle, setProductStyle] = useState("grid");
   const [productSidebar, setProductSidebar] = useState(false);
   const [shopData, setShopData] = useState<Product[]>([]);
-  const [filltredProducts,setFilltredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [stickyMenu, setStickyMenu] = useState(false);
   const [paginationInfo,setPaginationInfo] = useState({currentPage:1,perPage:12,totalPages:10});
-  const categories = useAppSelector((state) => state.categoriesSlice.list) as Category[];
   const { t } = useTranslation();
   const [fillters,setFillters] = useState<productFillter>({});
+  const [resetFillterSignal, setResetFillterSignal] = useState(false);
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
       setStickyMenu(true);
@@ -76,7 +74,18 @@ const ShopWithSidebar = () => {
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-  },[paginationInfo.currentPage,fillters])
+  },[paginationInfo.currentPage])
+
+  useEffect(() => {
+    getProducts(1,paginationInfo.perPage,fillters)
+    .then((data) => {
+        setShopData(data);
+        paginationInfo.totalPages = totalPages;
+        paginationInfo.currentPage = 1;
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  },[fillters])
 
   if (loading) return <p>Loading...</p>;
 
@@ -135,24 +144,27 @@ const ShopWithSidebar = () => {
                   <div className="bg-white shadow-1 rounded-lg py-4 px-5">
                     <div className="flex items-center justify-between">
                       <p>{t('Filters')}:</p>
-                      <button className="text-blue" onClick={()=>setFillters({})}>{t('CleanAll')}</button>
+                      <button className="text-blue" onClick={()=>{
+                        setResetFillterSignal((prev)=> (!prev));
+                        setFillters({});
+                        }}>{t('CleanAll')}</button>
                     </div>
                   </div>
 
                   {/* <!-- category box --> */}
-                  <CategoryDropdown categories={categories} setFillter={setFillters}/>
+                  <CategoryDropdown setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
 
                   {/* <!-- gender box --> */}
-                  <GenderDropdown setFillter={setFillters}/>
+                  <GenderDropdown setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
 
                   {/* // <!-- size box --> */}
-                  <SizeDropdown setFillter={setFillters}/>
+                  <SizeDropdown setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
 
                   {/* // <!-- color box --> */}
-                  <ColorsDropdwon setFillter={setFillters}/>
+                  <ColorsDropdwon setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
 
                   {/* // <!-- price range box --> */}
-                  <PriceDropdown setFillter={setFillters}/>
+                  <PriceDropdown setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
                 </div>
               </form>
             </div>

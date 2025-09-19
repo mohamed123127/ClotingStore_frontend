@@ -6,6 +6,7 @@
     "Girls": "Fille",
     "TwoItems": "Ensemble deux pièces",
     "ThreeItems": "Ensemble trois pièces",
+    "FourthItems": "Ensemble de 4 pièces",
 
     "JardinEnfant": "Jardin d’Enfants",
     "ShoppingForPlaceHolder": "Que cherchez-vous à acheter ?",
@@ -112,6 +113,10 @@
   "homeDelivery": "Livraison à domicile",
   "pickupPointDelivery": "Livraison au siège de l'entreprise",
     "deliveryMethod": "Mode de livraison",
-      "orderAndDeliveryDetails": "Détails de la commande et de la livraison"
+      "orderAndDeliveryDetails": "Détails de la commande et de la livraison",
 
+  "ShirtLength": "Longueur de la chemise",
+  "SleeveLength": "Longueur de la manche",
+  "PantsLength": "Longueur du pantalon",
+  "ItemSizes": "Tailles de l'article"
 }

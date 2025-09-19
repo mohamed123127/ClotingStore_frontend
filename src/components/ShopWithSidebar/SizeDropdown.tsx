@@ -2,10 +2,16 @@
 import React, { use, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 
-const SizeDropdown = ({setFillter}) => {
+const SizeDropdown = ({setFillter , resetFillterSignal}) => {
     const { t } = useTranslation();
   const [toggleDropdown, setToggleDropdown] = useState(true);
   const [sizes,setSizes] = useState<string[]>([]);
+  const [selectedsizes,setSelectedSizes] = useState([]);
+
+   useEffect(()=>{
+    setSelectedSizes([]);
+  },[resetFillterSignal])
+
   useEffect(()=>{
     async function fetchSizes(){
       const result = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "sizes");
@@ -20,6 +26,21 @@ const SizeDropdown = ({setFillter}) => {
     fetchSizes();
     //setSizes(["XS","S","M","L","XL","XXL"])
   },[])
+
+   useEffect(()=>{
+    if(selectedsizes?.length > 0){
+      setFillter(prevFillter => ({
+        ...prevFillter,
+        size: selectedsizes.join(",")
+      }));
+    }else{
+       setFillter(prevFillter => {
+      const updated = { ...prevFillter };
+      delete updated.size;   // 👈 يحذف المفتاح مباشرة
+      return updated;
+    });
+    }
+    },[selectedsizes])
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
@@ -63,10 +84,22 @@ const SizeDropdown = ({setFillter}) => {
       >
        {sizes.map((size,key) => (
         <label key={key}
-          className="cursor-pointer select-none flex items-center rounded-md bg-blue text-white hover:bg-blue hover:text-white"
+          className={`cursor-pointer select-none flex items-center rounded-md text-white hover:bg-blue hover:text-white 
+            ${selectedsizes.includes(size) ? 'bg-blue' : 'bg-blue-light-2'}`}
         >
           <div className="relative">
-            <input type="radio" name="size" id="sizeM" className="sr-only" />
+            <input type="checkbox" name="size" id={size} className="sr-only" onChange={(e) => {
+  setSelectedSizes(prev => {
+    let updated;
+    if (e.target.checked) {
+      return [...prev, size]; // أضف اللون
+    } else {
+      return prev.filter(c => c !== size); // احذف اللون
+    }
+  });
+}}  
+          checked={selectedsizes.includes(size)}
+        />
             <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
               {size}
             </div>

@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 
-const ColorsDropdwon = ({setFillter}) => {
+const ColorsDropdwon = ({setFillter , resetFillterSignal}) => {
    const [toggleDropdown, setToggleDropdown] = useState(true);
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColors, setSelectedColors] = useState([]);
   const [colors,setColors] = useState<string[]>([]);
     const { t } = useTranslation();
 
@@ -40,6 +40,24 @@ data.colors.forEach(color => {
     //setSizes(["XS","S","M","L","XL","XXL"])
   },[])
 
+ useEffect(()=>{
+    setSelectedColors([]);
+  },[resetFillterSignal])
+
+  useEffect(()=>{
+    if(selectedColors?.length > 0){
+  setFillter(prevFillter => ({
+        ...prevFillter,
+        color: selectedColors.join(",")
+      }));
+    }else{
+     setFillter(prevFillter => {
+      const updated = { ...prevFillter };
+      delete updated.color;   // 👈 يحذف المفتاح مباشرة
+      return updated;
+    });
+    }
+  },[selectedColors])
     // useEffect(()=>{
     //   setActiveColor(colors[0]);
     // },[])
@@ -55,11 +73,11 @@ function renderCustomComponent(color: string) {
     case "biker":
       return (
     <div
-      className="w-6 h-6 rounded-full bg-[#918072]"
+      className={`w-6 h-6 rounded-full bg-[#918072] ${selectedColors.includes(color) ? "ring-2 ring-offset-1 ring-blue-dark" : ""}`}
     />      );
     default:
       return (
-        <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs bg-gray-300">
+        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs bg-gray-300 ${selectedColors.includes(color) ? "ring-2 ring-offset-1 ring-blue-dark" : ""}`}>
           ?
         </div>
       );
@@ -113,22 +131,26 @@ function renderCustomComponent(color: string) {
     >
       <div className="relative group">
         <input
-          type="radio"
+          type="checkbox"
           name="color"
           id={color}
           className={`sr-only `}
-          onChange={() => {
-            setSelectedColor(color);
-            setFillter(prev =>({...prev, color: color}));
-            // console.log("Selected color:", color);
-          }}
-          checked={selectedColor === color}
-/>
+          onChange={(e) => {
+  setSelectedColors(prev => {
+    if (e.target.checked) {
+      return [...prev, color]; // أضف اللون
+    } else {
+      return prev.filter(c => c !== color); // احذف اللون
+    }
+  });
+}}  
+          checked={selectedColors.includes(color)}
+        />
         <div className="flex items-center justify-center w-8 h-8 rounded-full">
         {isValidCssColor(color) ? (
           <span
             className={`block w-6 h-6 rounded-full ${
-              selectedColor === color ? "ring-2 ring-offset-1 ring-blue-dark" : ""
+              selectedColors.includes(color) ? "ring-2 ring-offset-1 ring-blue-dark" : ""
             }`}
             style={{
               backgroundColor: color,

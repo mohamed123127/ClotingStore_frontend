@@ -3,44 +3,55 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { useTranslation } from 'next-i18next';
 
-const PriceDropdown = ({setFillter}) => {
+const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
-    const { t } = useTranslation();
-  const [priceRange, setPriceRange] = useState({min:0, max:100});
-  const [selectedPrice, setSelectedPrice] = useState({
-    from: 0,
-    to: 100,
-  });
+  const { t } = useTranslation();
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
+  const [selectedPrice, setSelectedPrice] = useState({ from: -1, to: -1 });
 
-  useEffect(()=>{
+   useEffect(()=>{
+    setSelectedPrice({ from: priceRange.min, to: priceRange.max });
+  },[resetFillterSignal])
+
+  useEffect(() => {
     async function fetchMinAndMaxPrice() {
-      const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + 'products/MaxAndMinPrice');
-      // console.log(response);
-      if(!response.ok){
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_Default_Api_Url + 'products/MaxAndMinPrice'
+      );
+
+      if (!response.ok) {
         throw new Error('Failed to fetch highest price');
       }
 
       const data = await response.json();
-      setPriceRange({min:data.minPrice, max: data.maxPrice});
+      setPriceRange({ min: data.minPrice, max: data.maxPrice });
+      setSelectedPrice({
+        from: data.minPrice,
+        to: data.maxPrice,
+      });
     }
 
     fetchMinAndMaxPrice();
-    // setSelectedPrice({from: priceRange.min, to: priceRange.max});
-  },[])
+  }, []);
 
+  // 🕒 Debounce update
   useEffect(() => {
-    setSelectedPrice({
-      from: priceRange.min,
-      to: priceRange.max,
-    });
-  }, [priceRange.min, priceRange.max]);
+    const handler = setTimeout(() => {
+      setFillter((prev) => ({
+        ...prev,
+        min_price: selectedPrice.from,
+        max_price: selectedPrice.to,
+      }));
+    }, 400); // ينتظر 400ms بعد توقف الحركة
+
+    return () => {
+      clearTimeout(handler); // إلغاء أي تايمر سابق أثناء السحب
+    };
+  }, [selectedPrice]);
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
-      <div
-        onClick={() => setToggleDropdown(!toggleDropdown)}
-        className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
-      >
+      <div className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5">
         <p className="text-dark">{t('Price')}</p>
         <button
           onClick={() => setToggleDropdown(!toggleDropdown)}
@@ -68,7 +79,6 @@ const PriceDropdown = ({setFillter}) => {
         </button>
       </div>
 
-      {/* // <!-- dropdown menu --> */}
       <div className={`p-6 ${toggleDropdown ? 'block' : 'hidden'}`}>
         <div id="pricingOne">
           <div className="price-range">
@@ -77,17 +87,17 @@ const PriceDropdown = ({setFillter}) => {
               min={priceRange.min}
               max={priceRange.max}
               value={[selectedPrice.from, selectedPrice.to]}
-              className="margin-lg"
+              className="margin-lg flex"
               step={50}
               onInput={(e) =>
                 setSelectedPrice({
-                  from:e[0],
+                  from: e[0],
                   to: e[1],
                 })
               }
             />
 
-            <div className="price-amount flex items-center justify-between pt-4">
+            <div className="price-amount flex rtl:flex-row-reverse items-center justify-between pt-4">
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
                   DA

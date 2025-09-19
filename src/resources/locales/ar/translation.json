@@ -4,6 +4,7 @@
     "Girls": "بنات",
     "TwoItems": "طقم مكون من قطعتين",
     "ThreeItems": "طقم مكون من ثلاث قطع",
+    "FourthItems": "طقم مكون من 4 قطع",
 
     "JardinEnfant": "حديقة الأطفال",
     "ShoppingForPlaceHolder": "ماذا تريد أن تشتري؟",
@@ -110,6 +111,11 @@
     "homeDelivery": "توصيل إلى المنزل",
   "pickupPointDelivery": "توصيل إلى مقر الشركة",
     "deliveryMethod": "طريقة التوصيل",
-  "orderAndDeliveryDetails": "تفاصيل الطلب والتوصيل"
+  "orderAndDeliveryDetails": "تفاصيل الطلب والتوصيل",
+
+  "ShirtLength": "طول القميص",
+  "SleeveLength": "طول اليد",
+  "PantsLength": "طول السروال",
+  "ItemSizes": "مقاسات القطعة"
 
 }
