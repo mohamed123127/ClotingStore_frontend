@@ -18,7 +18,7 @@ export async function GET(request) {
     return Response.json(data, { status: response.status });
   } catch (error) {
     console.error("Proxy Error:", error);
-    return Response.json({ error: "Something went wrong" }, { status: 500 });
+    return Response.json({ message: "Something went wrong" , error:error}, { status: 500 });
   }
 }
 
@@ -43,6 +43,6 @@ export async function POST(request) {
     return Response.json(data, { status: response.status });
   } catch (error) {
     console.error("Proxy Error:", error);
-    return Response.json({ error: "Something went wrong" }, { status: 500 });
+    return Response.json({ message: "Something went wrong" , error:error}, { status: 500 });
   }
 }
