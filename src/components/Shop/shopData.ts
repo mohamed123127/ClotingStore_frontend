@@ -18,16 +18,13 @@ function generateFillter(filters: productFillter): string {
 
 export async function getProducts(pageNumber,perPage,fillters): Promise<Product[]> {
   const fillter= generateFillter(fillters);
-  console.log("Generated fillter:", fillter);
   const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products?page=" + pageNumber + "&per_page=" + perPage+fillter);
-  // console.log(response);
   if (!response.ok) throw new Error("Failed to fetch products");
   const data = await response.json();
 
   const products = data.products;
   totalProducts = data.total_products;
   totalPages = data.last_page;
-  //console.log(data.products);
   return products.map((p: any) : Product => ({
     id: p.id, 
     name: p.name,

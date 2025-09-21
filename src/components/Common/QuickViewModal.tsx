@@ -15,6 +15,7 @@ import { get } from "node:http";
 import { prototype } from "node:events";
 import PreLoader from "@/components/Common/PreLoader";
 import { useTranslation } from "next-i18next";
+import { size } from "zod";
 
 const QuickViewModal = () => {
    const { isModalOpen, closeModal } = useModalContext();
@@ -36,11 +37,8 @@ const QuickViewModal = () => {
   const [activePreview, setActivePreview] = useState(product?.previewImage);
   const isAllLoaded = !loading.colors && !loading.sizes && !loading.images;
   const [selectedVariantQuantityInCart,setSelectedVariantQuantityInCart] = useState(0);
-  const [itemMesurement,setItemMesurement] = useState({
-    shirtLength: 52,
-    sleeveLength: 49,
-    pantsLength: 74
-  });
+  const [productMesurements,setProductMesurements] = useState([]);
+  const [selectedItemMesurements,setSelectedItemMesurements] = useState(null);
   // preview modal
   const zoomCurrentPreviewImage = () => {
     dispatch(updateproductDetails(product));
@@ -86,6 +84,7 @@ const QuickViewModal = () => {
       setQuantity(1);
     };
   }, [isModalOpen, closeModal]);
+  
   //to load product detaillies
   useEffect(() => {
     setProductWithDetailles({...product});
@@ -136,10 +135,23 @@ const QuickViewModal = () => {
           // closeModal();
           return;
         }
-
+        setProductMesurements(jsonResponse.sizes);
         const sizes = ExtractWithoutRepetition(jsonResponse.sizes,"size");
         setProductWithDetailles((prev)=>({...prev,sizes}));
-        setLoading((prev)=>({...prev,sizes:false}));
+        // console.log(jsonResponse.sizes);
+        if(selectedVariant){
+          const selectedSize = jsonResponse.sizes.find((size)=>(size.size == selectedVariant.size))
+          if(selectedSize?.mesurements.length > 0){
+            setSelectedItemMesurements({
+              size:selectedVariant.size,
+              shirtLength: selectedSize.mesurements[0].value,
+              sleeveLength: selectedSize.mesurements[1].value,
+              pantsLength: selectedSize.mesurements[2].value
+            });
+            console.log(selectedSize.mesurements);
+          }
+        }
+          setLoading((prev)=>({...prev,sizes:false}));
       } catch (error) {
         console.error("Error fetching variants:", error);
       }
@@ -189,7 +201,19 @@ const QuickViewModal = () => {
       setSelectedVariant(foundVariant);
       const quantityInCart = carteItems.find(item => item.id == foundVariant.id)?.quantity ?? 0;
       setSelectedVariantQuantityInCart(quantityInCart);
-      //console.log("quantityInCart",quantityInCart);
+
+          const selectedSize = productMesurements.find((product)=>(product.size == foundVariant.size))
+          if(selectedSize?.mesurements.length > 0){
+            setSelectedItemMesurements({
+              size:selectedVariant.size,
+              shirtLength: selectedSize.mesurements[0].value,
+              sleeveLength: selectedSize.mesurements[1].value,
+              pantsLength: selectedSize.mesurements[2].value
+            });
+          }else{
+            setSelectedItemMesurements(null);
+          }
+        
     }else{
       const emptyVariant = {id:null,color:selectedVariant.color,size:selectedVariant.size,quantity:0};
       setSelectedVariant(emptyVariant);
@@ -375,14 +399,17 @@ const QuickViewModal = () => {
                   </div>
 
                   {/* Sizes mesurement */}
-              <div className="mt-4 p-2 bg-gray-3 rounded-lg w-full">
+             {
+              selectedItemMesurements && 
+               <div className="mt-4 p-2 bg-gray-3 rounded-lg w-full">
                 <h3 className="text-red-dark text-lg">{t('ItemSizes')}</h3>
                 <ol className="text-dark">
-                    <li>{t('ShirtLength')}: {itemMesurement.shirtLength}cm</li>
-                    <li>{t('SleeveLength')}: {itemMesurement.sleeveLength}cm</li>
-                    <li>{t('PantsLength')}: {itemMesurement.pantsLength}cm</li>
+                    <li>{t('ShirtLength')}: {selectedItemMesurements.shirtLength}cm</li>
+                    <li>{t('SleeveLength')}: {selectedItemMesurements.sleeveLength}cm</li>
+                    <li>{t('PantsLength')}: {selectedItemMesurements.pantsLength}cm</li>
                 </ol>
               </div>
+             }
 
               <div className="flex flex-wrap justify-between gap-2 mt-6 mb-7.5">
                 <div className="flex justify-between w-full">

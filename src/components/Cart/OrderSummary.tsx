@@ -98,11 +98,21 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
   }
 }
 
+  const metaPixelExcute = ()=>{
+    if (typeof window !== "undefined" && (window as any).fbq) {
+    (window as any).fbq("track", "Purchase", {
+      value: totalPrice, // ✅ قيمة الشراء (ضع السعر هنا)
+      currency: "DZD", // ✅ العملة (غيرها الى DZD أو ما تستعمل)
+    });
+  }
+  }
+
   const checkoutClick = async()=>{
     setIsTheSaleCompleted(false);
        const isCheckoutsuccess = await checkoutFunction();
        setIsTheSaleCompleted(true);
        if(!isCheckoutsuccess) return;
+        metaPixelExcute();
        dispatch(removeAllItemsFromCart());
        dispatch(clearOrderInfo());
        //shippingDetaillies);
@@ -116,8 +126,18 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
         <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
           <h3 className="font-medium text-xl text-dark">{t('OrderSummary')}</h3>
         </div>
-
         <div className="pt-2.5 pb-8.5 px-4 sm:px-8.5">
+          <div>
+          <h3 className='text-xl text-bold text-dark'>خيارات الدفع</h3>
+          <div className='flex mt-2'>
+            <input type='radio' checked={true} onChange={()=>{}}/>
+            <p className='mx-1 text-dark' style={{fontWeight: 'normal'}}>الدفع عند الاستلام</p>
+          </div>
+          <div className='flex mt-1 mb-6'>
+            <input type='radio' checked={false} disabled/>
+            <p className='mx-1 text-gray-5' style={{fontWeight: 'normal'}}>الدفع عبر البطاقة الذهبية (غير متوفرة)</p>
+          </div>
+          </div>
           {/* <!-- ProductsValue --> */}
           <div className="flex items-center justify-between py-5 border-b border-gray-3">
             <div>
@@ -149,7 +169,7 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
               </p>
             </div>
           </div>
-
+          
           {/* <!-- checkout button --> */}
           <Button
           size="small"
