@@ -6,8 +6,8 @@ import ShopWithSidebarPage from "./(pages)/shop-with-sidebar/page";
 
 
 export const metadata: Metadata = {
-  title: "NextCommerce | Nextjs E-commerce template",
-  description: "This is Home for NextCommerce Template",
+  title: "Jardin d'enfant - Boutique enline",
+  description: "Jardin d'enfant est un Boutique enline pour vent des vetement pour enfant",
   // other metadata
 };
 

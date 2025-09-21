@@ -99,11 +99,14 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
 }
 
   const metaPixelExcute = ()=>{
-    if (typeof window !== "undefined" && (window as any).fbq) {
+   if (typeof window !== "undefined" && (window as any).fbq) {
+    console.log("🔥 Purchase Event Sent to Meta Pixel!");
     (window as any).fbq("track", "Purchase", {
-      value: totalPrice, // ✅ قيمة الشراء (ضع السعر هنا)
-      currency: "DZD", // ✅ العملة (غيرها الى DZD أو ما تستعمل)
+      value: totalPrice,
+      currency: "DZD",
     });
+  } else {
+    console.warn("⚠️ fbq not found!");
   }
   }
 
@@ -116,7 +119,7 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
        dispatch(removeAllItemsFromCart());
        dispatch(clearOrderInfo());
        //shippingDetaillies);
-       router.push("/ThnaksForPurshase")
+      //  router.push("/ThnaksForPurshase")
   }
   
   return (
