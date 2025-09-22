@@ -1,12 +1,10 @@
 export async function GET(request) {
   const url = new URL(request.url);
   const path = url.searchParams.get("path"); // مثلا: /products
-  const params = url.searchParams.toString()
-    .replace(`path=${encodeURIComponent(path)}`, ""); // بقية الـ query params
-
+  url.searchParams.delete("path"); // نشيلها
+  const params = url.searchParams.toString();
   // بناء الـ URL النهائي
   const targetUrl = `${process.env.API_URL}${path}${params ? `?${params}` : ""}`;
-
   try {
     const response = await fetch(targetUrl, {
       method: "GET",
@@ -21,7 +19,6 @@ export async function GET(request) {
 
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
-      console.log(`[API SUCCESS] URL: ${targetUrl}, Status: ${response.status}`);
       return Response.json(data, { status: response.status });
     } else {
       const text = await response.text();

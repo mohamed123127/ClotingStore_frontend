@@ -70,6 +70,8 @@ const ShopWithSidebar = () => {
   useEffect(() => {
     getProducts(paginationInfo.currentPage,paginationInfo.perPage,fillters)
     .then((data) => {
+        // console.log(paginationInfo.currentPage);
+        // console.log(data);
         setShopData(data);
       })
       .catch((err) => console.error(err))

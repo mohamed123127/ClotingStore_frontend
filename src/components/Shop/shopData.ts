@@ -18,7 +18,13 @@ function generateFillter(filters: productFillter): string {
 
 export async function getProducts(pageNumber,perPage,fillters): Promise<Product[]> {
   const fillter= generateFillter(fillters);
-  const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + "products?page=" + pageNumber + "&per_page=" + perPage+fillter);
+  const path = "products";
+  const params = new URLSearchParams({
+    page: pageNumber,
+    per_page: perPage
+  });
+  console.log(process.env.NEXT_PUBLIC_Default_Api_Url + `${encodeURIComponent(path)}&${params.toString()}` +fillter);
+  const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + `${encodeURIComponent(path)}&${params.toString()}` +fillter);
   if (!response.ok) throw new Error("Failed to fetch products");
   const data = await response.json();
 
