@@ -3,14 +3,15 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { useTranslation } from 'next-i18next';
 
-const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
+const PriceDropdown = ({ setFillter,fillters , resetFillterSignal}) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
   const { t } = useTranslation();
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
-  const [selectedPrice, setSelectedPrice] = useState({ from: -1, to: -1 });
+  const [priceRange, setPriceRange] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState(null);
+  const [tempPrice, setTempPrice] = useState({ from: -1, to: -1 });
 
    useEffect(()=>{
-    setSelectedPrice({ from: priceRange.min, to: priceRange.max });
+    setSelectedPrice({ from: priceRange?.min, to: priceRange?.max });
   },[resetFillterSignal])
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
 
       const data = await response.json();
       setPriceRange({ min: data.minPrice, max: data.maxPrice });
-      setSelectedPrice({
+      setTempPrice({
         from: data.minPrice,
         to: data.maxPrice,
       });
@@ -36,17 +37,26 @@ const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
 
   // 🕒 Debounce update
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setFillter((prev) => ({
-        ...prev,
-        min_price: selectedPrice.from,
-        max_price: selectedPrice.to,
-      }));
-    }, 400); // ينتظر 400ms بعد توقف الحركة
+    // console.log(fillters);
+      if(selectedPrice && selectedPrice.from && selectedPrice.to){
+        setFillter((prev) => {
+          const newFilter = { ...prev };
+          if(fillters['min_price'] != selectedPrice.from){
+            newFilter.min_price = selectedPrice.from;
+          }else if(fillters['min_price'] == priceRange.min){
+                delete newFilter.min_price;
+        }
 
-    return () => {
-      clearTimeout(handler); // إلغاء أي تايمر سابق أثناء السحب
-    };
+        if(fillters['max_price'] != selectedPrice.to){
+            newFilter.max_price = selectedPrice.to;
+          }else if(fillters['max_price'] == priceRange.max){
+                delete newFilter.max_price;
+        }
+            // console.log(newFilter);
+
+        return newFilter;
+        });
+      }
   }, [selectedPrice]);
 
   return (
@@ -84,17 +94,25 @@ const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
           <div className="price-range">
             <RangeSlider
               id="range-slider-gradient"
-              min={priceRange.min}
-              max={priceRange.max}
-              value={[selectedPrice.from, selectedPrice.to]}
+              min={priceRange?.min}
+              max={priceRange?.max}
+              value={[tempPrice.from, tempPrice.to]}
               className="margin-lg flex"
               step={50}
-              onInput={(e) =>
-                setSelectedPrice({
-                  from: e[0],
-                  to: e[1],
-                })
-              }
+              onInput={(e) => setTempPrice({
+                from:e[0],
+                to:e[1]
+              })} // بس نخزن القيمة
+              onThumbDragEnd={() => {
+                // console.log(priceRange);
+                if (tempPrice) {
+                  setSelectedPrice({
+                    from: tempPrice.from,
+                    to: tempPrice.to,
+                  });
+                }
+              }}
+              
             />
 
             <div className="price-amount flex rtl:flex-row-reverse items-center justify-between pt-4">
@@ -103,7 +121,7 @@ const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
                   DA
                 </span>
                 <span id="minAmount" className="block px-3 py-1.5">
-                  {selectedPrice.from}
+                  {tempPrice.from}
                 </span>
               </div>
 
@@ -112,7 +130,7 @@ const PriceDropdown = ({ setFillter , resetFillterSignal}) => {
                   DA
                 </span>
                 <span id="maxAmount" className="block px-3 py-1.5">
-                  {selectedPrice.to}
+                  {tempPrice.to}
                 </span>
               </div>
             </div>

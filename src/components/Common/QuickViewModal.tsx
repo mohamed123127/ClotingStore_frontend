@@ -148,7 +148,7 @@ const QuickViewModal = () => {
               sleeveLength: selectedSize.mesurements[1].value,
               pantsLength: selectedSize.mesurements[2].value
             });
-            console.log(selectedSize.mesurements);
+            // console.log(selectedSize.mesurements);
           }
         }
           setLoading((prev)=>({...prev,sizes:false}));

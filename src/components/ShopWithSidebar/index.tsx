@@ -58,28 +58,24 @@ const ShopWithSidebar = () => {
   });
 
   useEffect(() => {
-    getProducts(paginationInfo.currentPage,paginationInfo.perPage,fillters)
-      .then((data) => {
-        setShopData(data);
-        paginationInfo.totalPages = totalPages;
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+        // console.log(2);
 
-  useEffect(() => {
     getProducts(paginationInfo.currentPage,paginationInfo.perPage,fillters)
     .then((data) => {
         // console.log(paginationInfo.currentPage);
         // console.log(data);
         setShopData(data);
+        paginationInfo.totalPages = totalPages;
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   },[paginationInfo.currentPage])
 
   useEffect(() => {
-    getProducts(1,paginationInfo.perPage,fillters)
+    // console.log(3);
+    // console.log(fillters);
+    if (Object.keys(fillters).length === 0) return;
+        getProducts(1,paginationInfo.perPage,fillters)
     .then((data) => {
         setShopData(data);
         paginationInfo.totalPages = totalPages;
@@ -166,7 +162,7 @@ const ShopWithSidebar = () => {
                   <ColorsDropdwon setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
 
                   {/* // <!-- price range box --> */}
-                  <PriceDropdown setFillter={setFillters} resetFillterSignal={resetFillterSignal}/>
+                  <PriceDropdown setFillter={setFillters} fillters={fillters} resetFillterSignal={resetFillterSignal}/>
                 </div>
               </form>
             </div>

@@ -51,6 +51,8 @@ export default function RootLayout({
   return (
     <html lang="ar" suppressHydrationWarning={true}>
      <head>
+      {/* Domain verification via meta */}
+      <meta name="facebook-domain-verification" content="a2xsonalwp3n0tt4szv95gxauq23kv" />
         {/* ✅ Meta Pixel Script */}
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`

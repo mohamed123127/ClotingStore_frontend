@@ -14,7 +14,7 @@ export async function GET(request) {
       },
       cache: "no-store",
     });
-
+    
     const contentType = response.headers.get("content-type");
 
     if (contentType && contentType.includes("application/json")) {

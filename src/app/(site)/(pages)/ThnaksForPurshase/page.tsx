@@ -7,15 +7,6 @@ import Cookies from "js-cookie";
 
 export default function ThanksForPurchase() {
 
-  const handleDownload = () => {
-    const shippingLabel = Cookies.get("shippingLabel");
-    Cookies.set("shippingLabel",null);
-    //console.log(shippingLabel);
-    if (!shippingLabel) alert("Shipping label not found")
-      else window.open(shippingLabel, "_blank");
-
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 text-center">
       {/* أيقونة ✅ */}
@@ -36,12 +27,12 @@ export default function ThanksForPurchase() {
             العودة إلى المتجر
           </button>
         </Link>
-        <button
+        {/* <button
           onClick={handleDownload}
           className="px-6 py-2 bg-green hover:bg-green-light text-white rounded-2xl shadow-md"
         >
           تحميل ملصق الشحن
-        </button>
+        </button> */}
       </div>
     </div>
   );

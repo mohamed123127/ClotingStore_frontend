@@ -88,19 +88,19 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
     body: jsonBodyData,
   });
 
-  if(response.ok){
-    const data = await response.json();
-    if(data.status == "success")
-    Coockies.set("shippingLabel",data?.label);
+  // if(response.ok){
+  //   const data = await response.json();
+    //if(data.status == "success")
+    //Coockies.set("shippingLabel",data?.label);
     
   //console.log(data);
   return true;
-  }
+  // }
 }
 
   const metaPixelExcute = ()=>{
    if (typeof window !== "undefined" && (window as any).fbq) {
-    console.log("🔥 Purchase Event Sent to Meta Pixel!");
+    // console.log("🔥 Purchase Event Sent to Meta Pixel!");
     (window as any).fbq("track", "Purchase", {
       value: totalPrice,
       currency: "DZD",
@@ -116,10 +116,10 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
        setIsTheSaleCompleted(true);
        if(!isCheckoutsuccess) return;
         metaPixelExcute();
+        router.push("/ThnaksForPurshase")
        dispatch(removeAllItemsFromCart());
        dispatch(clearOrderInfo());
        //shippingDetaillies);
-      //  router.push("/ThnaksForPurshase")
   }
   
   return (
