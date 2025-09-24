@@ -117,6 +117,8 @@
   "ShirtLength": "Shirt length",
   "SleeveLength": "Sleeve length",
   "PantsLength": "Pants length",
-  "ItemSizes": "Item sizes"
+  "ItemSizes": "Item sizes",
+  "jacketLength": "Jacket Length",
+  "jacketSleeveLength": "Jacket Sleeve Length"
 
 }

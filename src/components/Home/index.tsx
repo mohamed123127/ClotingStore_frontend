@@ -11,7 +11,7 @@ import StartView from "./StartView";
 
 const Home = () => {
   return (
-    <main>
+    <main className="m-24">
       {/* <StartView /> */}
       {/* <Hero /> */}
       <Categories />
@@ -19,7 +19,7 @@ const Home = () => {
       {/* <PromoBanner /> */}
       <BestSeller />
       {/* <CounDown /> */}
-      {/* <Testimonials /> */}
+      <Testimonials />
       <Newsletter />
     </main>
   );

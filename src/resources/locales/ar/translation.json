@@ -116,6 +116,8 @@
   "ShirtLength": "طول القميص",
   "SleeveLength": "طول اليد",
   "PantsLength": "طول السروال",
-  "ItemSizes": "مقاسات القطعة"
+  "ItemSizes": "مقاسات القطعة",
+  "jacketLength": "طول المعطف",
+  "jacketSleeveLength": "طول كم المعطف"
 
 }

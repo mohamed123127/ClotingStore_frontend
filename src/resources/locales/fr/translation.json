@@ -118,5 +118,7 @@
   "ShirtLength": "Longueur de la chemise",
   "SleeveLength": "Longueur de la manche",
   "PantsLength": "Longueur du pantalon",
-  "ItemSizes": "Tailles de l'article"
+  "ItemSizes": "Tailles de l'article",
+  "jacketLength": "Longueur de la veste",
+  "jacketSleeveLength": "Longueur des manches de la veste"
 }

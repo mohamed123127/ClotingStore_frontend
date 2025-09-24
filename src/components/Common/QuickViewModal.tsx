@@ -136,12 +136,13 @@ const QuickViewModal = () => {
           return;
         }
         setProductMesurements(jsonResponse.sizes);
+        // console.log(jsonResponse.sizes);
         const sizes = ExtractWithoutRepetition(jsonResponse.sizes,"size");
         setProductWithDetailles((prev)=>({...prev,sizes}));
         // console.log(jsonResponse.sizes);
         if(selectedVariant){
           const selectedSize = jsonResponse.sizes.find((size)=>(size.size == selectedVariant.size))
-          if(selectedSize?.mesurements.length > 0){
+          if(selectedSize?.mesurements.length == 3){
             setSelectedItemMesurements({
               size:selectedVariant.size,
               shirtLength: selectedSize.mesurements[0].value,
@@ -149,8 +150,19 @@ const QuickViewModal = () => {
               pantsLength: selectedSize.mesurements[2].value
             });
             // console.log(selectedSize.mesurements);
+          }else if(selectedSize?.mesurements.length == 5){
+              setSelectedItemMesurements({
+              size:selectedVariant.size,
+              shirtLength: selectedSize.mesurements[0].value,
+              sleeveLength: selectedSize.mesurements[1].value,
+              jacketLength: selectedSize.mesurements[2].value,
+              jacketSleeveLength: selectedSize.mesurements[3].value,
+              pantsLength: selectedSize.mesurements[4].value
+            });
           }
         }
+        console.log(selectedItemMesurements);
+        console.log(Object.keys(selectedItemMesurements?selectedItemMesurements:{}).length);
           setLoading((prev)=>({...prev,sizes:false}));
       } catch (error) {
         console.error("Error fetching variants:", error);
@@ -407,6 +419,12 @@ const QuickViewModal = () => {
                     <li>{t('ShirtLength')}: {selectedItemMesurements.shirtLength}cm</li>
                     <li>{t('SleeveLength')}: {selectedItemMesurements.sleeveLength}cm</li>
                     <li>{t('PantsLength')}: {selectedItemMesurements.pantsLength}cm</li>
+                    {Object.keys(selectedItemMesurements).length > 4 && (
+                          <>
+                            <li>{t('jacketLength')}: {selectedItemMesurements.jacketLength}cm</li>
+                            <li>{t('jacketSleeveLength')}: {selectedItemMesurements.jacketSleeveLength}cm</li>
+                          </>
+                        )}
                 </ol>
               </div>
              }
