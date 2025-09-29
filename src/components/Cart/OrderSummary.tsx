@@ -110,16 +110,71 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
   }
   }
 
+async function sendEmail() {
+  const mailTemplate = `
+    <div style="font-family: Arial, sans-serif; color:#333;">
+      <h2 style="color:#4CAF50;">📦 طلب جديد من موقع Jardin d'Enfant</h2>
+
+      <h3>👤 معلومات الزبون</h3>
+      <p><strong>الاسم:</strong> ${customerInfo.firstName} ${customerInfo.lastName}</p>
+      <p><strong>الهاتف:</strong> ${customerInfo.phoneNumber}</p>
+
+      <h3>🚚 تفاصيل التوصيل</h3>
+      <p><strong>طريقة التوصيل:</strong> ${shippingDetaillies.shippingMethod}</p>
+      <p><strong>الولاية:</strong> ${shippingDetaillies.wilayaName}</p>
+      <p><strong>البلدية:</strong> ${shippingDetaillies.communeName}</p>
+      <p><strong>العنوان:</strong> ${shippingDetaillies.address}</p>
+      <p><strong>Stop Desk ID:</strong> ${shippingDetaillies.agenceId}</p>
+
+      <h3>🛒 المشتريات</h3>
+      <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%;">
+        <tr>
+          <th>إسم المنتج</th>
+          <th>اللون</th>
+          <th>المقاس</th>
+          <th>السعر</th>
+          <th>الكمية</th>
+        </tr>
+        ${cartItems.map(
+          (item) => `
+            <tr>
+              <td>${item.name}</td>
+              <td>${item.color}</td>
+              <td>${item.size}</td>
+              <td>${item.price} دج</td>
+              <td>${item.quantity}</td>
+            </tr>
+          `
+        ).join("")}
+      </table>
+
+      <h3 style="color:#E91E63;">💰 المجموع الكلي: ${totalPrice} دج</h3>
+    </div>
+  `;
+
+  await fetch("/api/emailSender", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      to: "mohamedlouahchi9@gmail.com",
+      subject: "New order in Jardin d'Enfant",
+      message: mailTemplate
+    }),
+  });
+}
+
+
+
   const checkoutClick = async()=>{
     setIsTheSaleCompleted(false);
-       const isCheckoutsuccess = await checkoutFunction();
-       setIsTheSaleCompleted(true);
-       if(!isCheckoutsuccess) return;
-        metaPixelExcute();
-        router.push("/ThnaksForPurshase")
-       dispatch(removeAllItemsFromCart());
-       dispatch(clearOrderInfo());
-       //shippingDetaillies);
+    const isCheckoutsuccess = await checkoutFunction();
+    setIsTheSaleCompleted(true);
+    if(!isCheckoutsuccess) return;
+      sendEmail();
+      metaPixelExcute();
+      router.push("/ThnaksForPurshase")
+      dispatch(removeAllItemsFromCart());
+      dispatch(clearOrderInfo());
   }
   
   return (

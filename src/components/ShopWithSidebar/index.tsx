@@ -72,9 +72,9 @@ const ShopWithSidebar = () => {
   },[paginationInfo.currentPage])
 
   useEffect(() => {
-    // console.log(3);
     // console.log(fillters);
     if (Object.keys(fillters).length === 0) return;
+    // console.log(3);
         getProducts(1,paginationInfo.perPage,fillters)
     .then((data) => {
         setShopData(data);
