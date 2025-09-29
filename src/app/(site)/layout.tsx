@@ -23,6 +23,8 @@ import i18n from '../../config/i18n';
 import { usePathname } from "next/navigation";
 
 import Script from "next/script";
+import { Analytics } from '@vercel/analytics/next';
+
 
 
 
@@ -88,6 +90,7 @@ export default function RootLayout({
                   <PreviewSliderProvider>
                     <Header />
                     {children} {/* ✅ هنا الصفحات تُعرض */}
+                    <Analytics />
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />
@@ -97,6 +100,7 @@ export default function RootLayout({
             </ReduxProvider>
             <ScrollToTop />
             <Footer />
+
           </>
         )}
       </body>
