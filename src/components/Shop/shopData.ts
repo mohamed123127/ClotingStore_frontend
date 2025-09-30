@@ -23,7 +23,7 @@ export async function getProducts(pageNumber,perPage,fillters): Promise<Product[
     page: pageNumber,
     per_page: perPage
   });
-  console.log(`${encodeURIComponent(path)}&${params.toString()}` +fillter);
+  // console.log(`${encodeURIComponent(path)}&${params.toString()}` +fillter);
   const response = await fetch(process.env.NEXT_PUBLIC_Default_Api_Url + `${encodeURIComponent(path)}&${params.toString()}` +fillter);
   if (!response.ok) throw new Error("Failed to fetch products");
   const data = await response.json();

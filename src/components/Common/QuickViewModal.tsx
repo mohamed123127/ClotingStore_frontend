@@ -161,8 +161,8 @@ const QuickViewModal = () => {
             });
           }
         }
-        console.log(selectedItemMesurements);
-        console.log(Object.keys(selectedItemMesurements?selectedItemMesurements:{}).length);
+        // console.log(selectedItemMesurements);
+        // console.log(Object.keys(selectedItemMesurements?selectedItemMesurements:{}).length);
           setLoading((prev)=>({...prev,sizes:false}));
       } catch (error) {
         console.error("Error fetching variants:", error);
