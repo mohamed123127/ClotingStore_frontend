@@ -15,6 +15,7 @@ const OrderSummary = ({ShippingFees,setErrors}) => {
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const customerInfo = useAppSelector((state)=>state.orderInfoSlice.customerInfo) as customerInfo;
   const shippingDetaillies = useAppSelector((state)=>state.orderInfoSlice.shippingDetaillies) as shippingDetaillies;
   const dispatch = useAppDispatch();
@@ -121,6 +122,7 @@ async function sendEmail() {
 
       <h3>🚚 تفاصيل التوصيل</h3>
       <p><strong>طريقة التوصيل:</strong> ${shippingDetaillies.shippingMethod}</p>
+      <p><strong>التوصيل مجاني:</strong> ${totalItems < 3 ? "لا" : "نعم"}</p>
       <p><strong>الولاية:</strong> ${shippingDetaillies.wilayaName}</p>
       <p><strong>البلدية:</strong> ${shippingDetaillies.communeName}</p>
       <p><strong>العنوان:</strong> ${shippingDetaillies.address}</p>
@@ -148,7 +150,9 @@ async function sendEmail() {
         ).join("")}
       </table>
 
-      <h3 style="color:#E91E63;">💰 المجموع الكلي: ${totalPrice} دج</h3>
+      <h4 style="color:#E91E63;"> المجموع: ${totalPrice} دج</h4>
+      <h4 style="color:#E91E63;"> سعر التوصيل : ${ShippingFees}DA دج</h4>
+      <h3 style="color:#E91E63;">💰 المجموع الكلي: ${totalItems < 3 ? totalPrice + ShippingFees : totalPrice} دج</h3>
     </div>
   `;
 
@@ -199,7 +203,7 @@ async function sendEmail() {
           {/* <!-- ProductsValue --> */}
           <div className="flex items-center justify-between py-5 border-b border-gray-3">
             <div>
-              <h4 className="font-medium text-dark">{t('ProductsValue')}</h4>
+              <h4 className="font-medium text-dark">{t('total')}</h4>
             </div>
             <div>
               <h4 className="font-medium text-dark text-right">{totalPrice}DA</h4>
@@ -209,10 +213,10 @@ async function sendEmail() {
           {/* <!-- ShippingFees --> */}
           <div className="flex items-center justify-between py-5 border-b border-gray-3">
             <div>
-              <h4 className="font-medium text-dark">{t('ShippingFees')}</h4>
+              <h4 className="font-medium text-dark">{t('shippingFees')}</h4>
             </div>
             <div>
-              <h4 className="font-medium text-dark text-right">{ShippingFees}DA</h4>
+              <h4 className="font-medium text-dark text-right">{totalItems < 3 ? ShippingFees : 0}DA</h4>
             </div>
           </div>
          
@@ -223,21 +227,22 @@ async function sendEmail() {
             </div>
             <div>
               <p className="font-medium text-lg text-dark text-right">
-                {totalPrice + ShippingFees}DA
+                {totalItems < 3 ? totalPrice + ShippingFees : totalPrice}DA
               </p>
             </div>
           </div>
           
           {/* <!-- checkout button --> */}
           <Button
-          size="small"
-          className="w-full h-12 flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
+          sx={{ fontSize: "16px" }}
+          size="medium"
+          className="w-full h-12 flex justify-center text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
           onClick={checkoutClick}
           loading={!isTheSaleCompleted}
           loadingPosition="start"
           variant="contained"
         >
-          {t('ProcessToCheckout')}
+          {t('confirmOrder')}
         </Button>
         </div>
       </div>

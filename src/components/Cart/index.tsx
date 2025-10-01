@@ -5,9 +5,11 @@ import SingleItem from "./SingleItem";
 import Breadcrumb from "../Common/Breadcrumb";
 import Link from "next/link";
 import ShippingForm from "./ShippingForm";
+import { useTranslation } from "next-i18next";
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const { t } = useTranslation();
   return (
     <>
       {/* <!-- ===== Breadcrumb Section Start ===== --> */}
@@ -19,8 +21,8 @@ const Cart = () => {
         <section className="overflow-hidden py-20 bg-gray-2">
           <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
             <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
-              <h2 className="font-medium text-dark text-2xl">Your Cart</h2>
-              <button className="text-blue">Clear Shopping Cart</button>
+              <h2 className="font-medium text-dark text-2xl">{t('yourCart')}</h2>
+              <button className="text-blue">{t('clearShoppingCart')}</button>
             </div>
 
             <div className="bg-white rounded-[10px] shadow-1">
@@ -29,28 +31,28 @@ const Cart = () => {
                   {/* <!-- table header --> */}
                   <div className="flex items-center py-5.5 px-7.5">
                     <div className="min-w-[300px]">
-                      <p className="text-dark">Product</p>
+                      <p className="text-dark">{t('Product')}</p>
                     </div>
                     <div className="min-w-[100px]">
-                      <p className="text-dark">Color</p>
+                      <p className="text-dark">{t('color')}</p>
                     </div>
                     <div className="min-w-[100px]">
-                      <p className="text-dark">Size</p>
+                      <p className="text-dark">{t('Size')}</p>
                     </div>
                     <div className="min-w-[100px]">
-                      <p className="text-dark">Price</p>
+                      <p className="text-dark">{t('Price')}</p>
                     </div>
 
                     <div className="min-w-[200px] text-center">
-                      <p className="text-dark">Quantity</p>
+                      <p className="text-dark">{t('quantity')}</p>
                     </div>
 
                     <div className="min-w-[200px] text-center">
-                      <p className="text-dark">Subtotal</p>
+                      <p className="text-dark">{t('total')}</p>
                     </div>
 
                     <div className="min-w-[50px]">
-                      <p className="text-dark text-right">Action</p>
+                      <p className="text-dark text-right">{t('action')}</p>
                     </div>
                   </div>
 

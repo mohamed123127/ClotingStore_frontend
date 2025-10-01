@@ -338,7 +338,7 @@ const Header = () => {
             {/* // <!--=== Nav Right Start ===--> */}
             <div className="hidden xl:block">
               <ul className="flex items-center gap-5.5">
-                <li className="py-4">
+                {/* <li className="py-4">
                   <a
                     href="#"
                     className="flex items-center gap-1.5 font-medium text-custom-sm text-dark hover:text-blue"
@@ -362,7 +362,7 @@ const Header = () => {
                     </svg>
                     {t('RecentlyViewed')}
                   </a>
-                </li>
+                </li> */}
 
                 <li className="py-4">
                   <Link

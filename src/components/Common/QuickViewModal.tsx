@@ -14,8 +14,8 @@ import { getProducts } from "../Shop/shopData";
 import { get } from "node:http";
 import { prototype } from "node:events";
 import PreLoader from "@/components/Common/PreLoader";
-import { useTranslation } from "next-i18next";
 import { size } from "zod";
+import { useTranslation } from "react-i18next";
 
 const QuickViewModal = () => {
    const { isModalOpen, closeModal } = useModalContext();
@@ -377,7 +377,7 @@ const QuickViewModal = () => {
                     {/* Colors */}
                   <div>
                     <h4 className="font-semibold text-lg text-dark mt-6 mb-3.5">
-                      Colors
+                      {t('Colors')}
                     </h4>
 
                     <div className="flex items-center flex-wrap gap-3">
@@ -386,7 +386,7 @@ const QuickViewModal = () => {
                                 onClick={()=>{
                                   setSelectedVariant((prev)=>({...prev,color}))
                                   }}>
-                          {color}
+                          {t(color)}
                         </button>
                       ))}
                     </div> 
@@ -395,7 +395,7 @@ const QuickViewModal = () => {
                       {/* Sizes */}
                   <div>
                     <h4 className="font-semibold text-lg text-dark mt-6 mb-3.5">
-                      Sizes
+                      {t('Sizes')}
                     </h4>
 
                     <div className="flex items-center flex-wrap gap-3">
@@ -433,7 +433,7 @@ const QuickViewModal = () => {
                 <div className="flex justify-between w-full">
                   <div className="flex justify-center items-center">
                     <h4 className="font-semibold text-lg text-dark mr-2">
-                      Price:
+                      {t("Price")}:
                     </h4>
 
                     <span className="flex items-center gap-2 font-medium text-lg">
@@ -443,8 +443,8 @@ const QuickViewModal = () => {
                   </div>
 
                   <div className="flex items-center">
-                    <h4 className="font-semibold text-lg text-dark mr-2">
-                      Quantity:
+                    <h4 className="font-semibold text-lg text-dark mr-2 ml-2">
+                      {t("quantity")}:
                     </h4>
 
                     <div className="flex gap-1 h-10">
@@ -532,7 +532,7 @@ const QuickViewModal = () => {
                         fill="#22AD5C"
                       />
                     </svg>
-                    <span className="font-medium text-dark"> {selectedVariant?.quantity - selectedVariantQuantityInCart>= quantity  ? 'In Stock' : selectedVariant.quantity + ' Available in stock'} </span>
+                    <span className="font-medium text-dark"> {selectedVariant?.quantity - selectedVariantQuantityInCart>= quantity  ? t('inStock') : selectedVariant.quantity + " " + t('availableInStock')} </span>
                   </div>
 
                   {/* Out of stock */}
@@ -547,7 +547,7 @@ const QuickViewModal = () => {
                         />
                       </svg>
 
-                      <span className="font-medium text-dark">Out of stock</span>
+                      <span className="font-medium text-dark">{t('outOfStock')}</span>
                   </div>
                 </div>
               </div>
@@ -556,10 +556,10 @@ const QuickViewModal = () => {
                 <button
                   disabled={selectedVariant?.quantity - selectedVariantQuantityInCart < quantity}
                   onClick={() => handleAddToCart()}
-                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark disabled:text-gray-4 disabled:cursor-not-allowed disabled:bg-gray-2
+                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark disabled:text-gray-4 disabled:cursor-not-allowed disabled:bg-gray-5
                   `}
                 >
-                  Add to Cart
+                  {t('addToCart')}
                 </button>
 
                 <button
@@ -580,7 +580,7 @@ const QuickViewModal = () => {
                       fill=""
                     />
                   </svg>
-                  Add to Wishlist
+                  {t('addToWishlist')}
                 </button>
               </div>
             </div>

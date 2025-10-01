@@ -13,6 +13,8 @@ import Paper from '@mui/material/Paper'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import React from 'react'
+import PrintIcon from '@mui/icons-material/Print';
+
 
 /** ---------- Types ---------- */
 export type SaledItem = {
@@ -25,6 +27,7 @@ export type SaledItem = {
 
 export type Sale = {
   id: string
+  tracking: string
   fullName: string
   status: string
   communeAndWillaya: string
@@ -32,13 +35,23 @@ export type Sale = {
   phoneNumber: string
   totalPrice: number
   ['updated at']: string
+  label: string
   saledItems: SaledItem[]
 }
 
 /** ---------- Row Component ---------- */
 function Row({ row }: { row: Sale }) {
   const [open, setOpen] = React.useState(false)
-
+  const printLabel = (label)=>{
+    if(label){
+      window.open(
+    label,
+    "_blank"
+  )
+    }else{
+    alert("لا يوجد اي وصل توصيل")
+  }
+  }
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -52,6 +65,7 @@ function Row({ row }: { row: Sale }) {
           </IconButton>
         </TableCell>
         <TableCell>{row.id}</TableCell>
+        <TableCell>{row.tracking}</TableCell>
         <TableCell>{row.fullName}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell>{row.communeAndWillaya}</TableCell>
@@ -59,6 +73,13 @@ function Row({ row }: { row: Sale }) {
         <TableCell>{row.phoneNumber}</TableCell>
         <TableCell align="right">{row.totalPrice} DA</TableCell>
         <TableCell>{new Date(row['updated at']).toLocaleString()}</TableCell>
+        <TableCell><IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => printLabel(row.label)}
+          >
+            {<PrintIcon className='text-blue'/>}
+          </IconButton></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
@@ -106,6 +127,7 @@ export function SalesTable({ sales }: { sales: Sale[] }) {
           <TableRow>
             <TableCell />
             <TableCell>ID</TableCell>
+            <TableCell>Tracking</TableCell>
             <TableCell>Client</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Commune/Wilaya</TableCell>
@@ -113,6 +135,7 @@ export function SalesTable({ sales }: { sales: Sale[] }) {
             <TableCell>Téléphone</TableCell>
             <TableCell align="right">Total</TableCell>
             <TableCell>Dernière maj</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

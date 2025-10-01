@@ -8,11 +8,13 @@ import { addItemToCart } from "@/redux/features/cart-slice";
 import Image from "next/image";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
+import { useTranslation } from "react-i18next";
 
 const SingleItem = ({ item }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { openModal } = useModalContext();
-  console.log(item);
+  //console.log(item);
   const handleRemoveFromWishlist = () => {
     dispatch(removeItemFromWishlist(item.id));
   };
@@ -57,16 +59,16 @@ const SingleItem = ({ item }) => {
         </button>
       </div>
 
-      <div className="min-w-[500px]">
+      <div className="min-w-[387px] w-full">
         <div className="flex items-center justify-between gap-5">
           <div className="w-full flex items-center gap-5.5">
-            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
-              <Image src={item.previewImage} alt="product" width={200} height={200} />
+            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5 cursor-pointer">
+              <Image src={item.previewImage} alt="product" width={200} height={200} onClick={() => showModel()}/>
             </div>
 
             <div>
               <h3 className="text-dark ease-out duration-200 hover:text-blue">
-                <a href="#"> {item.name} </a>
+                <a href="#" onClick={() => showModel()}> {item.name} </a>
               </h3>
             </div>
           </div>
@@ -74,7 +76,7 @@ const SingleItem = ({ item }) => {
       </div>
 
       <div className="min-w-[205px]">
-        <p className="text-dark">{item.price}DA</p>
+        <p className="text-dark text-center">{item.price}DA</p>
       </div>
 
       
@@ -82,9 +84,9 @@ const SingleItem = ({ item }) => {
       <div className="min-w-[150px] flex justify-end">
         <button
           onClick={() => showModel()}
-          className="inline-flex text-dark hover:text-white bg-gray-1 border border-gray-3 py-2.5 px-6 rounded-md ease-out duration-200 hover:bg-blue hover:border-gray-3"
+          className="inline-flex text-white border border-gray-3 py-2.5 px-6 rounded-md ease-out duration-200 bg-blue hover:bg-blue-light"
         >
-          show model
+          {t('viewProduct')}
         </button>
       </div>
     </div>

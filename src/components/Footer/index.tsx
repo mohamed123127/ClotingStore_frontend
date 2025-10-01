@@ -171,7 +171,7 @@ const Footer = () => {
             </h2>
 
             <ul className="flex flex-col gap-3.5">
-              <li>
+              {/* <li>
                 <a className="ease-out duration-200 hover:text-blue" href="#">
                   {t('MyAccount')}
                 </a>
@@ -180,19 +180,19 @@ const Footer = () => {
                 <a className="ease-out duration-200 hover:text-blue" href="#">
                   {t('SignIn')} / {t('SignUp')}
                 </a>
-              </li>
+              </li> */}
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/cart">
                   {t('Cart')}
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/wishlist">
                   {t('Wishlist')}
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/shop-with-sidebar">
                   {t('Shop')}
                 </a>
               </li>
@@ -205,23 +205,23 @@ const Footer = () => {
             </h2>
 
             <ul className="flex flex-col gap-3">
-              <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  {t('PurchaseAndDeliveryProcess')}
-                </a>
-              </li>
-              <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
-                  {t('ExchangePolicy')}
-                </a>
-              </li>
-              <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+               <li>
+                <a className="ease-out duration-200 hover:text-blue" href="/commenQuestions">
                   {t('FAQs')}
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/commenQuestions?questionId=order">
+                  {t('PurchaseAndDeliveryProcess')}
+                </a>
+              </li>
+              <li>
+                <a className="ease-out duration-200 hover:text-blue" href="/commenQuestions?questionId=exchange">
+                  {t('ExchangePolicy')}
+                </a>
+              </li>
+              <li>
+                <a className="ease-out duration-200 hover:text-blue" href="/contact">
                   {t('Contact')}
                 </a>
               </li>

@@ -1,7 +1,83 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
+import { useTranslation } from 'next-i18next';
+import { z, ZodIssue } from "zod";
 
 const Contact = () => {
+  const { t } = useTranslation();
+  const [errors, setErrors] = useState<ZodIssue[]>([]);
+  const [formData,setFormData] = useState({
+    firstName:"",
+    lastName:"",
+    email:"",
+    phone:"",
+    message:""
+  });
+
+  const contactFormSchema = z.object({
+  firstName: z.string().nonempty("يجب عليك ادخال الاسم"),
+  lastName: z.string().nonempty("يجب عليك ادخال اللقب"),
+  email: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || val.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+      "البريد الإلكتروني غير صالح"
+    ),
+  phone: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^0(5|6|7)\d{8}$/.test(val),
+      "رقم الهاتف غير صالح"
+    ),
+  message: z.string().nonempty("يجب عليك ادخال الرسالة"),
+});
+
+  const sendMessage = async()=>{
+    const mailTemplate = `
+    <div style="font-family: Arial, sans-serif; color:#333; line-height:1.6;">
+      <h2 style="color:#4CAF50;">📩 Nouveau message du client</h2>
+      
+      <h3>👤 Informations du client</h3>
+      <p><strong>Nom complet:</strong> ${formData.firstName} ${formData.lastName}</p>
+      <p><strong>Email:</strong> ${formData.email}</p>
+      <p><strong>Téléphone:</strong> ${formData.phone}</p>
+      
+      <h3>📝 Message</h3>
+      <p style="background:#f9f9f9; padding:10px; border-radius:5px; border:1px solid #ddd;">
+        ${formData.message}
+      </p>
+    </div>
+  `;
+   try {
+    contactFormSchema.parse(formData);
+    const res = await fetch("/api/emailSender", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: "mohamedlouahchi9@gmail.com",
+        subject: `📩 New Contact Message from ${formData.firstName} ${formData.lastName}`,
+        message: mailTemplate,
+      }),
+    });
+
+    if (res.ok) {
+      setErrors([]);
+      alert("✅ Your message has been sent successfully!");
+    } else {
+      alert("❌ Failed to send message.");
+    }
+  } catch (err) {
+    if(err instanceof z.ZodError){
+      setErrors(err.issues);
+      return;
+    }
+    console.error("Error sending message:", err);
+    alert("⚠️ Error while sending message.");
+  }
+  }
   return (
     <>
       <Breadcrumb title={"Contact"} pages={["contact"]} />
@@ -12,7 +88,7 @@ const Contact = () => {
             <div className="xl:max-w-[370px] w-full bg-white rounded-xl shadow-1">
               <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
                 <p className="font-medium text-xl text-dark">
-                  Contact Information
+                  {t('contactInformation')}
                 </p>
               </div>
 
@@ -33,7 +109,7 @@ const Contact = () => {
                         fill="#3C50E0"
                       />
                     </svg>
-                    Name: James Septimus
+                    jardindenfant1825@gmail.com
                   </p>
 
                   <p className="flex items-center gap-4">
@@ -61,59 +137,45 @@ const Contact = () => {
                         fill="#3C50E0"
                       />
                     </svg>
-                    Phone: 1234 567890
+                    0772387456
                   </p>
 
-                  <p className="flex gap-4">
-                    <svg
-                      className="mt-0.5 shrink-0"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 22 22"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M3.89453 7.80506C3.89453 4.08157 7.12254 1.14581 10.9987 1.14581C14.8749 1.14581 18.1029 4.08157 18.1029 7.80506C18.1029 11.2986 15.9369 15.4 12.4423 16.8934C11.5248 17.2855 10.4726 17.2855 9.55514 16.8934C6.06051 15.4 3.89453 11.2986 3.89453 7.80506ZM10.9987 2.52081C7.7872 2.52081 5.26953 4.93234 5.26953 7.80506C5.26953 10.856 7.19951 14.3915 10.0955 15.629C10.6678 15.8736 11.3296 15.8736 11.9019 15.629C14.7979 14.3915 16.7279 10.856 16.7279 7.80506C16.7279 4.93234 14.2102 2.52081 10.9987 2.52081ZM10.9987 7.10415C10.3659 7.10415 9.85286 7.61715 9.85286 8.24998C9.85286 8.88281 10.3659 9.39581 10.9987 9.39581C11.6315 9.39581 12.1445 8.88281 12.1445 8.24998C12.1445 7.61715 11.6315 7.10415 10.9987 7.10415ZM8.47786 8.24998C8.47786 6.85776 9.60648 5.72915 10.9987 5.72915C12.3909 5.72915 13.5195 6.85776 13.5195 8.24998C13.5195 9.6422 12.3909 10.7708 10.9987 10.7708C9.60648 10.7708 8.47786 9.6422 8.47786 8.24998ZM3.29449 13.7469C3.54935 14.0283 3.52779 14.4631 3.24634 14.7179C2.72595 15.1891 2.51953 15.6402 2.51953 16.0416C2.51953 16.7417 3.18321 17.6044 4.79901 18.3315C6.35028 19.0296 8.54159 19.4791 10.9987 19.4791C13.4558 19.4791 15.6471 19.0296 17.1984 18.3315C18.8142 17.6044 19.4779 16.7417 19.4779 16.0416C19.4779 15.6402 19.2714 15.1891 18.7511 14.7179C18.4696 14.4631 18.448 14.0283 18.7029 13.7468C18.9578 13.4654 19.3925 13.4438 19.674 13.6987C20.3734 14.332 20.8529 15.126 20.8529 16.0416C20.8529 17.6198 19.4645 18.8196 17.7626 19.5854C15.9962 20.3803 13.6042 20.8541 10.9987 20.8541C8.3932 20.8541 6.00117 20.3803 4.23476 19.5854C2.53288 18.8196 1.14453 17.6198 1.14453 16.0416C1.14453 15.126 1.62399 14.332 2.32341 13.6987C2.60487 13.4438 3.03963 13.4654 3.29449 13.7469Z"
-                        fill="#3C50E0"
-                      />
-                    </svg>
-                    Address: 7398 Smoke Ranch RoadLas Vegas, Nevada 89128
-                  </p>
                 </div>
               </div>
             </div>
 
             <div className="xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 p-4 sm:p-7.5 xl:p-10">
-              <form>
+              <div>
                 <div className="flex flex-col lg:flex-row gap-5 sm:gap-8 mb-5">
                   <div className="w-full">
                     <label htmlFor="firstName" className="block mb-2.5">
-                      First Name <span className="text-red">*</span>
+                      {t('prenom')} <span className="text-red">*</span>
                     </label>
 
                     <input
                       type="text"
                       name="firstName"
                       id="firstName"
-                      placeholder="Jhon"
+                      placeholder={t('enterYourName')}
                       className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      value={formData.firstName}
+                      onChange={(e)=>setFormData({...formData, firstName: e.target.value})}
                     />
                   </div>
 
                   <div className="w-full">
                     <label htmlFor="lastName" className="block mb-2.5">
-                      Last Name <span className="text-red">*</span>
+                      {t('nom')} <span className="text-red">*</span>
                     </label>
 
                     <input
                       type="text"
                       name="lastName"
                       id="lastName"
-                      placeholder="Deo"
+                      placeholder={t('enterYourLastName')}
                       className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      value={formData.lastName}
+                      onChange={(e)=>setFormData({...formData, lastName: e.target.value})}
                     />
                   </div>
                 </div>
@@ -121,54 +183,61 @@ const Contact = () => {
                 <div className="flex flex-col lg:flex-row gap-5 sm:gap-8 mb-5">
                   <div className="w-full">
                     <label htmlFor="subject" className="block mb-2.5">
-                      Subject
+                      {t('email')}
                     </label>
 
                     <input
                       type="text"
-                      name="subject"
-                      id="subject"
-                      placeholder="Type your subject"
+                      name="email"
+                      id="email"
+                      placeholder={t('enterYourEmail')}
                       className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      value={formData.email}
+                      onChange={(e)=>setFormData({...formData, email: e.target.value})}
                     />
                   </div>
 
                   <div className="w-full">
                     <label htmlFor="phone" className="block mb-2.5">
-                      Phone
+                      {t('numeroTelephone')}
                     </label>
 
                     <input
                       type="text"
                       name="phone"
                       id="phone"
-                      placeholder="Enter your phone"
+                      placeholder={t('enterYourPhone')}
                       className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      value={formData.phone}
+                      onChange={(e)=>setFormData({...formData, phone: e.target.value})}
                     />
                   </div>
                 </div>
 
                 <div className="mb-7.5">
                   <label htmlFor="message" className="block mb-2.5">
-                    Message
+                    {t('message')}<span className="text-red">*</span>
                   </label>
 
                   <textarea
                     name="message"
                     id="message"
                     rows={5}
-                    placeholder="Type your message"
+                    placeholder={t('typeYourMessage')}
                     className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full p-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                    value={formData.message}
+                    onChange={(e)=>setFormData({...formData, message: e.target.value})}
                   ></textarea>
+                {errors && errors.length > 0 && <p className="text-red-dark">{errors[0].message}</p>}
                 </div>
 
                 <button
-                  type="submit"
+                  type="submit" onClick={sendMessage}
                   className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
                 >
-                  Send Message
+                  {t('sendMessage')}
                 </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>

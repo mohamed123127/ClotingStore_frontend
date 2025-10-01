@@ -11,11 +11,15 @@ import { useSelector } from "react-redux";
 import SingleItem from "./SingleItem";
 import Link from "next/link";
 import EmptyCart from "./EmptyCart";
+import ProgressBar from "../ProgressBar";
+import { FaCheckCircle } from "react-icons/fa";
+
 
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
   const totalPrice = useSelector(selectTotalPrice);
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -93,10 +97,27 @@ const CartSidebarModal = () => {
 
           <div className="border-t border-gray-3 bg-white pt-5 pb-4 sm:pb-7.5 lg:pb-11 mt-7.5 sticky bottom-0">
             <div className="flex items-center justify-between gap-5 mb-6">
-              <p className="font-medium text-xl text-dark">{t('Subtotal')}:</p>
+              <p className="font-medium text-xl text-dark">{t('Total')}:</p>
 
               <p className="font-medium text-xl text-dark">{totalPrice}DA</p>
             </div>
+            <hr className="my-2 text-gray-4"/>
+            <ProgressBar value={totalItems} max={3} label={
+              <div className="flex">
+{
+    totalItems > 2 ? (
+      <span className="flex items-center justify-center gap-1 text-green-600 font-medium mt-1">
+        <FaCheckCircle className="text-green w-5 h-5"/> {t('freeDelivery')}
+      </span>
+    ) : (
+      <span>
+        {t('order3ItemsOrMoreFreeDelivery')}
+      </span>
+    )
+  }</div>
+  }
+  />
+            <hr className="mb-4 text-gray-4"/>
 
             <div className="flex items-center gap-4">
               <Link
@@ -105,13 +126,6 @@ const CartSidebarModal = () => {
                 className="w-full flex justify-center font-medium text-white bg-blue py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-blue-dark"
               >
                 {t('ViewCart')}
-              </Link>
-
-              <Link
-                href="/checkout"
-                className="w-full flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
-              >
-                {t('Checkout')}
               </Link>
             </div>
           </div>
